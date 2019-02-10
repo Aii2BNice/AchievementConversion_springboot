@@ -1,7 +1,5 @@
 package com.dyq.user.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,11 +14,11 @@ public class UserRestController {
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping("queryAllLogin")
-	public List<Login> queryAllLogin(@RequestBody Login login) {
-		return userService.queryAllLogin(login);
-	}
-	
+	/**
+	 * 用户名有效性验证
+	 * @param login
+	 * @return
+	 */
 	@RequestMapping("verLoginName")
 	public String verLoginName(@RequestBody Login login) {
 		String msg = "";
@@ -31,15 +29,15 @@ public class UserRestController {
 		return msg;
 	}
 	
-	@RequestMapping("cancellation")
-	public String cancellation(@RequestBody Login login) {
+	@RequestMapping("doupdateuser")
+	public String doupdateuser(@RequestBody Login login) {
 		String msg = "";
 		int count = 0;
-		try { count = userService.deleteLogin(login.getLoginId()); }
+		try { count = userService.updateLogin(login); }
 		catch(Exception e) { count = 0;}
 		finally {
-			if(count>0) { msg = "用户注销成功"; }
-			else { msg = "用户注销失败,请重试"; }
+			if(count>0) { msg = "用户修改成功"; }
+			else { msg = "用户修改失败"; }
 		}
 		return msg;
 	}

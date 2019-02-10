@@ -1,5 +1,7 @@
 package com.dyq.user.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,12 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+	/**
+	 * 登录
+	 * @param req
+	 * @param login
+	 * @return
+	 */
 	@RequestMapping("login")
 	public String login(HttpServletRequest req,Login login) {
 		
@@ -34,6 +42,12 @@ public class UserController {
 		return url;
 	}
 	
+	/**
+	 * 注册
+	 * @param req
+	 * @param login
+	 * @return
+	 */
 	@RequestMapping("register")
 	public String register(HttpServletRequest req,Login login) {
 		String msg = "";
@@ -43,34 +57,62 @@ public class UserController {
 		catch(Exception e) { count = 0;}
 		finally {
 			if(count>0) { 
-				url = "/login";
+				System.out.println(login);
+				if(login.getPowerId()!=1) {
+					url = "/system/user/queryuser";
+					msg = "用户添加成功";
+				}else {
+					url = "/login";
+				}
 			}
 			else { 
-				msg = "用户注册失败,请重试"; 
+				if(login.getPowerId()!=null) {
+					url = "/system/user/queryuser";
+					msg = "用户添加失败";
+				}else {
+					msg = "用户注册失败,请重试";
+					url = "/register";
+				}
 				req.setAttribute("msg", msg);
-				url = "/register";
 			}
 		}
 		return url;
 	}
 	
+	/**
+	 * 转到修改页面
+	 * @param req
+	 * @param loginName
+	 * @return
+	 */
 	@RequestMapping("tomodifylogin")
 	public String tomodifylogin(HttpServletRequest req,String loginName){
 		req.setAttribute("user",userService.queryLoginByName(loginName));
-		return "/user/modifylogin";
+		return "/modifylogin";
 	}
 	
-	@RequestMapping("toexit")
-	public String toexit(HttpServletRequest req,String loginName){
-		req.getSession().removeAttribute("user");
-		return "/login";
+	/**
+	 * 转到修个人登录信息改页面
+	 * @param req
+	 * @param loginName
+	 * @return
+	 */
+	@RequestMapping("toselfupdate")
+	public String toselfupdate(HttpServletRequest req,String loginName){
+		req.setAttribute("user",userService.queryLoginByName(loginName));
+		return "/system/admindetail";
 	}
 	
+	/**
+	 * 修改登录信息
+	 * @param req
+	 * @param login
+	 * @return
+	 */
 	@RequestMapping("modifylogin")
 	public String modifylogin(HttpServletRequest req,Login login) {
 		String url = "";
 		int count = 0;
-		System.out.println(login);
 		try { 
 			Login log = userService.queryLoginByName(login.getLoginName());
 			login.setLoginId(log.getLoginId());
@@ -83,11 +125,68 @@ public class UserController {
 				req.getSession().setAttribute("user", login);
 			}
 			else { 
-				url = "/user/modifylogin";
+				url = "/modifylogin";
 				req.setAttribute("msg", "用户信息修改失败，请重试");
 			}
 		}
 		return url;
+	}
+	
+	/**
+	 * 查询所有登录用户
+	 * @param login
+	 * @return
+	 */
+	@RequestMapping("queryAllLogin")
+	public String queryAllLogin(HttpServletRequest req,Login login) {
+		List<Login> logins = userService.queryAllLogin(login);
+		req.setAttribute("logins", logins);
+		return "/system/user/queryuser";
+	}
+	
+	/**
+	 * 跳转到管理员修改个人信息页面
+	 * @param req
+	 * @param loginName
+	 * @return
+	 */
+	@RequestMapping("toupdate")
+	public String toupdate(HttpServletRequest req,String loginName) {
+		req.setAttribute("user",userService.queryLoginByName(loginName));
+		return "/system/user/updateuser";
+	}
+	
+	/**
+	 * 删除登录用户
+	 * @param login
+	 * @return
+	 */
+	@RequestMapping("dodelete")
+	public String dodelete(HttpServletRequest req,Integer loginId) {
+		int count = 0;
+		try { count = userService.deleteLogin(loginId); }
+		catch(Exception e) { count = 0;}
+		finally {
+			if(count>0) { 
+				req.setAttribute("msg", "用户删除成功");
+			}
+			else {
+				req.setAttribute("msg", "用户删除失败");
+			}
+		}
+		return "/system/user/queryuser";
+	}
+	
+	/**
+	 * 退出登录
+	 * @param req
+	 * @param loginName
+	 * @return
+	 */
+	@RequestMapping("toexit")
+	public String toexit(HttpServletRequest req,String loginName){
+		req.getSession().removeAttribute("user");
+		return "/login";
 	}
 	
 }

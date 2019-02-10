@@ -22,6 +22,5 @@ public interface UserService {
 	int updateLogin(Login login);
 	int updateUser(User user);
 	int deleteLogin(Integer loginId);
-	int deleteUser(Integer userId);
 	
 }

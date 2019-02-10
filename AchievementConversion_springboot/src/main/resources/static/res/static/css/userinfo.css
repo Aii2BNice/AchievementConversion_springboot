@@ -8,6 +8,10 @@ canvas{
   vertical-align:bottom;
 }
 
+body{background-image: none;background-color: #607D8B}
+	table tr td{width: 650px;height: 30px;border: 1px dashed black;text-align: center;line-height: 40px;color: midnightblue;font-size: 13px;}
+	#upload-left{width: 170px;height: 100%;position: fixed;top: 100px;left:10%;border-right: 1px solid black;}
+
 .count-particles{
   background: #000022;
   position: absolute;
@@ -49,7 +53,6 @@ canvas{
 	width: 100%;
 	height: 100%;
 	position: relative;
-	background-image: url(../img/banner2.jpg);
 	background-position: 50% 50%;
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -93,6 +96,7 @@ body{
 	font-size:12px;
 	font-family:'微软雅黑',"宋体","Arial Narrow";
 	color:#000;
+	background-image:none;
 	line-height:1.2;
 	text-align:left;}
 .sk-rotating-plane.active{display: block;}

@@ -6,7 +6,13 @@
 <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 	$(function(){
-		
+		$(".a").click(function(){
+			if(confirm("是否要删除？")){
+				
+			}else{
+				return false;
+			}
+		})
 	})
 </script>
 </head>
@@ -42,6 +48,8 @@
 		<option>2</option>
 		<option>3</option>
 	</select>
+	
+	<a class="a" href="test">123</a><br/><br/>
 	
 	<span th:text="hahaa"></span>
 </body>

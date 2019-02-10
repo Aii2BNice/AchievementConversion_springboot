@@ -7,9 +7,9 @@
 <link rel="stylesheet" href="res/layui/css/layui.css">
 <link rel="stylesheet" href="res/static/css/index.css">
 <link rel="stylesheet" href="res/static/css/userinfo.css" />
+<link rel="stylesheet" href="css/buttons.css"/>
 <style type="text/css">
-	table tr td{width: 650px;height: 40px;border: 1px dashed black;text-align: center;line-height: 40px;color: midnightblue;font-size: 13px;}
-	#upload-left{width: 170px;height: 310px;position: fixed;top: 100px;left:10%;border-right: 1px solid black;}
+	
 	ul li{font-size: 16px;line-height: 40px;}
 	ul li a:hover{color: #13E8E9;}
 	#upload-right{width: 650px;height: 300px;position: fixed;top: 100px;left:40%;padding-top: 15px;}
@@ -19,7 +19,39 @@
 <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 	$(function(){
-		
+		$("#select").append("<option value=''>--请选择--</option>");
+		$("#select").css("width","145px");
+		$("#h2").css({"color":"white","position":"relative","left":"270px","top":"-10px"});
+		if($("#msg").text()!=""){
+			alert($("#msg").text());
+		}
+		$.ajax({
+			type:'post',
+			url:'queryAllPower',
+			data:{},
+			contentType:'application/json;charset=utf-8',
+			success:function(data){
+				for(var index in data){
+					$("#select").append("<option value="+data[index].powerId+">"+data[index].powerName+"</option>");
+				}
+			}
+		});
+		$(".delete").click(function(){
+			var $name = $(this).attr("title");
+			if(!confirm("是否要删除" + $name + "?")){
+				return false;
+			}
+		});
+		$("#add").click(function(){
+			location.href = "toadduser";
+		})
+		function getJsonData(){
+			var json = {
+					"loginName":$("#loginName").val(),
+					"powerId":$("#select").val()
+			}
+			return json;
+		}
 	})
 </script>
 </head>
@@ -54,9 +86,9 @@
 			<h3 th:text="'欢迎   '+${session.user.loginName} + ' 登录  '"></h3>
 			<hr>
 			<ul>
-				<li><a href="tocustomermessage" style="color: #13E8E9">消息通知</a></li>
-				<li><a href="tomodifylogin" th:href="@{tomodifylogin(loginName=${session.user.loginName})}">个人管理</a></li>
-				<li><a href="toqueryuser">用户管理</a></li>
+				<li><a href="toadminmessage">消息通知</a></li>
+				<li><a href="toselfupdate" th:href="@{toselfupdate(loginName=${session.user.loginName})}">个人管理</a></li>
+				<li><a href="toqueryuser" style="color: #13E8E9">用户管理</a></li>
 				<li><a href="toquerypower">权限管理</a></li>
 				<li><a href="toexamfile">专利审核</a></li>
 				<li><a href="toquerylogging">日志管理</a></li>
@@ -64,14 +96,47 @@
 			</ul>
 		</div>
 		<div id="upload-right">
-			<table>
-				<tr><th colspan="5" style="text-align: center;">消息列表</th></tr>
+			<form action="queryAllLogin" method="post">
+				<table>
 				<tr>
-					<td>成果名称</td>
-					<td>成果提交者</td>
-					<td>详情</td>
+					<td>用户名：</td>
+						<td><input type="text" id="loginName" name="loginName"/></td>
+					</tr>
+					<tr>
+						<td>权限：</td>
+						<td><select id="select" name="powerId"></select></td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<input class="button button-pill button-primary" type="submit" value="查询"/>&nbsp;&nbsp;
+							<input id="add" class="button button-pill button-primary" type="button" value="添加"/>
+						</td>
+					</tr>
+				</table>
+			</form>
+			<br><br>
+			<h2 id="h2">用户信息查询</h2>
+			<table id="tab">
+				<tr>
+					<td>用户编号</td>
+					<td>用户登录名</td>
+					<td>密码</td>
+					<td>权限</td>
+					<td>操作</td>
 				</tr>
+				<tr th:each="login : ${logins}">
+					<td th:text="${login.loginId}"></td>
+					<td th:text="${login.loginName}"></td>
+					<td th:text="${login.pass}"></td>
+					<td th:text="${login.power.powerName}"></td>
+					<td>
+						<a href="toupdate" th:href="@{toupdate(loginName=${login.loginName})}">修改</a>&nbsp;&nbsp;
+						<a class="delete" href="dodelete" th:href="@{dodelete(loginId=${login.loginId})}" th:attr="title=${login.loginName}">删除</a>
+					</td>
+				</tr>
+				<tr><td colspan="5" style="text-align: center;font-size: 15px;color: #4FC3F7;" th:if="${login==null}">暂无数据</td></tr>
 			</table>
+			<span id="msg" style="display: none;" th:text="${msg}"></span>
 		</div>
 	</div>
 	<div class="footer">

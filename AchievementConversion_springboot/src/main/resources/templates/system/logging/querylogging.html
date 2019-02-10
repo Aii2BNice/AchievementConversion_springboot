@@ -8,8 +8,6 @@
 <link rel="stylesheet" href="res/static/css/index.css">
 <link rel="stylesheet" href="res/static/css/userinfo.css" />
 <style type="text/css">
-	table tr td{width: 650px;height: 40px;border: 1px dashed black;text-align: center;line-height: 40px;color: midnightblue;font-size: 13px;}
-	#upload-left{width: 170px;height: 310px;position: fixed;top: 100px;left:10%;border-right: 1px solid black;}
 	ul li{font-size: 16px;line-height: 40px;}
 	ul li a:hover{color: #13E8E9;}
 	#upload-right{width: 650px;height: 300px;position: fixed;top: 100px;left:40%;padding-top: 15px;}
@@ -54,12 +52,12 @@
 			<h3 th:text="'欢迎   '+${session.user.loginName} + ' 登录  '"></h3>
 			<hr>
 			<ul>
-				<li><a href="tocustomermessage" style="color: #13E8E9">消息通知</a></li>
+				<li><a href="toadminmessage">消息通知</a></li>
 				<li><a href="tomodifylogin" th:href="@{tomodifylogin(loginName=${session.user.loginName})}">个人管理</a></li>
 				<li><a href="toqueryuser">用户管理</a></li>
 				<li><a href="toquerypower">权限管理</a></li>
 				<li><a href="toexamfile">专利审核</a></li>
-				<li><a href="toquerylogging">日志管理</a></li>
+				<li><a href="toquerylogging" style="color: #13E8E9">日志管理</a></li>
 				<li><a href="toexit">退出系统</a></li>
 			</ul>
 		</div>

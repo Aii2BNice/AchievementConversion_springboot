@@ -44,19 +44,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				and power_id = #{powerId}
 			</if>
 		</where>
+		order by login_id
 	</select>
 	
 	<!-- 注册 -->
 	<insert id="insertLogin">
-		INSERT INTO login(login_name,pass) 
-		VALUES (#{loginName},#{pass})
+		INSERT INTO login(login_name,pass<if test="powerId!=null and powerId!=''">,power_id</if>) 
+		VALUES (#{loginName},#{pass}<if test="powerId!=null and powerId!=''">,#{powerId}</if>)
 	</insert>
 	
 	<!-- 修改登录名及密码 -->
 	<update id="updateLogin">
 		UPDATE login
-		SET login_name = #{loginName}, pass = #{pass}
+		SET login_name = #{loginName}, pass = #{pass}<if test="powerId!=null and powerId!=''">, power_id = #{powerId}</if>
 		WHERE (login_id = #{loginId});
 	</update>
+	
+	<!-- 删除登录用户 -->
+	<delete id="deleteLogin">
+		delete from login 
+		where login_id = #{loginId}
+	</delete>
 	
 </mapper>

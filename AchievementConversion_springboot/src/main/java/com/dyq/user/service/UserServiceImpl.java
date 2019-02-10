@@ -61,11 +61,6 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public int deleteUser(Integer userId) {
-		return dao.deleteUser(userId);
-	}
-
-	@Override
 	public Login queryLoginByName(String loginName) {
 		return dao.queryLoginByName(loginName);
 	}
@@ -74,5 +69,6 @@ public class UserServiceImpl implements UserService{
 	public List<Login> queryAllLogin(Login login) {
 		return dao.queryAllLogin(login);
 	}
+
 
 }
