@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+<title>科研成果转化平台-首页</title>
+<link rel="icon" href="res/static/ico/pagelogo.ico" type="image/x-icon"/>
+<link rel="stylesheet" href="res/layui/css/layui.css">
+<link rel="stylesheet" href="res/static/css/index.css">
+</head>
+<body>
+<!-- nav部分 -->
+  <div class="nav index">
+    <div class="layui-container">
+      <!-- logo -->
+      <div class="nav-logo">
+        <a href="toindex">
+          <img src="res/static/img/logo.png" alt="科研转化" height="55px">
+        </a>
+      </div>
+      <div class="nav-list">
+        <button>
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="layui-nav">
+          <li class="layui-nav-item layui-this"><a href="toindex">首页</a></li>
+          <li class="layui-nav-item"><a href="tonews">动态</a></li>
+          <li class="layui-nav-item"><a href="tocase">案例</a></li>
+          <li class="layui-nav-item">
+          	<a th:if="${user==null}" href="tologin" id="login">登录</a>
+          	<a th:unless="${user==null}" href="tologin" id="login" th:text="${user.loginName}"></a>
+          </li>
+          <li class="layui-nav-item"><a href="toabout">关于</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- banner部分 -->
+  <div>
+    <div class="layui-carousel" id="banner">
+      <div>
+        <div>
+          <img src="res/static/img/banner1.jpg" width="500px" />
+          <div class="panel">
+            <p class="title">科研成果转化</p>
+            <p>成熟的成果转化平台</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- main部分 -->
+  <div class="main-product">
+    <div class="layui-container">
+      <p class="title">科研成果转化平台的<span>功能介绍</span></p>
+      <div class="layui-row layui-col-space25">
+        <div class="layui-col-sm6 layui-col-md3">
+          <div class="content">
+            <div><img src="res/static/img/Big_icon1.png"></div>
+            <div>
+              <p class="label">人才储备</p>
+              <p>与各大高校及科研机构合作，优秀的人才培养，出众的科研成果。</p>
+            </div>
+            <a href="javascript:;">查看详情 ></a>
+          </div>
+        </div>
+        <div class="layui-col-sm6 layui-col-md3 ">
+          <div class="content">
+            <div><img src="res/static/img/Big_icon2.png"></div>
+            <div>
+              <p class="label">转化过程</p>
+              <p>将科研成果转化为新兴的新技术、新材料、新工艺新产业</p>
+            </div>
+            <a href="javascript:;">查看详情 ></a>
+          </div>
+        </div>
+        <div class="layui-col-sm6 layui-col-md3 ">
+          <div class="content">
+            <div><img src="res/static/img/Big_icon4.png"></div>
+            <div>
+              <p class="label">转化后续</p>
+              <p>将科研成果转化为新技术之后，长达一年的后续跟踪调研</p>
+            </div>
+            <a href="#">查看详情 ></a>
+          </div>
+        </div>
+        <div class="layui-col-sm6 layui-col-md3 ">
+          <div class="content">
+            <div><img src="res/static/img/Big_icon3.png"></div>
+            <div>
+              <p class="label">资料储备</p>
+              <p>拥有强大的资料信息储备，丰富的参考资料，强有力的技术支持</p>
+            </div>
+            <a href="#">查看详情 ></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- footer部分 -->
+  <div class="footer">
+    <div class="layui-container">
+      <p class="footer-web">
+        <a href="#">合作伙伴</a>
+        <a href="#">清华大学</a>
+        <a href="#">北京大学</a>
+        <a href="#">复旦大学</a>
+        <a href="#">大连科研成果转化技术有限公司</a>
+        <a href="#">沈阳成果转化技术有限公司</a>
+        <a href="#">北京科研转化有限公司</a>
+      </p>
+      <div class="layui-row footer-contact">
+        <div class="layui-col-sm2 layui-col-lg1"><img src="res/static/img/erweima.jpg"></div>
+        <div class="layui-col-sm10 layui-col-lg11">
+          <div class="layui-row">
+            <div class="layui-col-sm6 layui-col-md8 layui-col-lg9">
+              <p class="contact-top"><i class="layui-icon layui-icon-cellphone"></i>&nbsp;400-1234567&nbsp;&nbsp;&nbsp;(9:00-18:00)</p>
+              <p class="contact-bottom"><i class="layui-icon layui-icon-home"></i>&nbsp;1234567@163.com</p>
+            </div>
+            <div class="layui-col-sm6 layui-col-md4 layui-col-lg3">
+              <p class="contact-top"><span class="right">大连高新园区</span></p>
+              <p class="contact-bottom"><span class="right">Copyright&nbsp;©&nbsp;2018-2020 More Templates </span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<script src="res/layui/layui.js"></script>
+<script>
+  layui.config({
+    base: 'res/static/js/' 
+  }).use('firm'); 
+</script>
+</body>
+</html>

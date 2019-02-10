@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dyq.user.domain.UserMapper">
+	
+	<resultMap type="power" id="powerMap">
+		<id property="powerId" column="power_id"/>
+		<id property="powerName" column="power_name"/>
+	</resultMap>
+	
+	<resultMap type="login" id="loginMap">
+		<id property="loginId" column="login_id"/>
+		<id property="loginName" column="login_name"/>
+		<id property="powerId" column="power_id"/>
+		<association property="power" column="power_id" select="selectPower"/>
+	</resultMap>
+	<select id="selectPower" resultMap="powerMap">
+		select * from power
+		where power_id = #{powerId}
+	</select>
+	
+	<!-- 登录 -->
+	<select id="login" parameterType="login" resultMap="loginMap">
+		select * from login
+		where login_name = #{loginName} and pass = #{pass}
+	</select>
+	
+	<!-- 用户名验证 -->
+	<select id="queryLoginByName" resultMap="loginMap">
+		select * from login 
+		where login_name = #{loginName}
+	</select>
+	
+	<!-- 查询全部 -->
+	<select id="queryAllLogin" resultMap="loginMap">
+		select * from login
+		<where>
+			<if test="loginName!=null and loginName!=''">
+				and login_name like "%"#{loginName}"%"
+			</if>
+			<if test="powerId!=null and powerId!=''">
+				and power_id = #{powerId}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 注册 -->
+	<insert id="insertLogin">
+		INSERT INTO login(login_name,pass) 
+		VALUES (#{loginName},#{pass})
+	</insert>
+	
+	<!-- 修改登录名及密码 -->
+	<update id="updateLogin">
+		UPDATE login
+		SET login_name = #{loginName}, pass = #{pass}
+		WHERE (login_id = #{loginId});
+	</update>
+	
+</mapper>

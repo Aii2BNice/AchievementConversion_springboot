@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("[type='button']").click(function(){
+			if($("[name='powerName']").val()==null || $("[name='powerName']").val()==""){
+				alert("请输入权限名");
+			}else{
+				$("#form").submit();
+			}
+		})
+		$("[name='powerName']").blur(function(){
+			
+		})
+	})
+</script>
+</head>
+<body>
+	
+	<form id="form" action="insertPower" method="post">
+		权限名:<input type="text" name="powerName"/><br><br>
+		<input type="button" value="添加"/>
+		<a href="hello.html">返回</a>
+	</form>
+	
+</body>
+</html>

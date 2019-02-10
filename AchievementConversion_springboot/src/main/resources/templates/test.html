@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		
+	})
+</script>
+</head>
+<body>
+
+	<span th:text="${msg}"></span><br/><br/>
+	<span th:text="*{msg}"></span><br/><br/>
+	<a href="test" th:href="@{test(str=${msg})}">...</a><br/><br/>
+	<span th:text="'123' + ${msg} + '!'"></span><br/><br/>
+	<span th:if="${msg==null}" th:test="${msg}"></span><br/><br/>
+	<input th:attr="value='1'">
+	<table>
+		<tr>
+			<td>编号</td>
+			<td>姓名</td>
+			<td>权限</td>
+		</tr>
+		<tr th:each="user : ${users}">
+			<td th:text="${user.loginId}"></td>
+			<td th:text="${user.loginName}"></td>
+			<td th:text="${user.power.powerName}"></td>
+		</tr>
+	</table>
+	
+	<div th:switch="${msg}">
+		<p th:case="1">admin</p>
+		<p th:case="2">HelloWorld</p>
+		<p th:case="*">other</p>
+	</div>
+	
+	<select>
+		<option>1</option>
+		<option>2</option>
+		<option>3</option>
+	</select>
+	
+	<span th:text="hahaa"></span>
+</body>
+</html>

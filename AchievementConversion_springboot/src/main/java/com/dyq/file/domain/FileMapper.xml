@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dyq.file.domain.FileMapper">
+	
+	<resultMap type="fileinfo" id="fileMap">
+		<id property="fileId" column="file_id"/>
+		<id property="fileName" column="file_name"/>
+	</resultMap>
+	
+	<select id="queryAllFile" resultMap="fileMap">
+		select * from fileinfo
+	</select>
+	
+	<insert id="insertFile">
+		INSERT INTO fileinfo (file_name) 
+		VALUES (#{fileName})
+	</insert>
+	
+</mapper>

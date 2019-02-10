@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dyq.power.domain.PowerMapper">
+	
+	<resultMap type="power" id="powerMap">
+		<id property="powerId" column="power_id"/>
+		<id property="powerName" column="power_name"/>
+	</resultMap>
+
+	<!-- 查询全部 -->
+	<select id="queryAllPower" resultMap="powerMap">
+		select * from power
+	</select>
+	
+	<select id="queryPowerByName" resultMap="powerMap">
+		select * from power where power_name = #{powerName}
+	</select>
+	
+	<insert id="insertPower">
+		INSERT INTO power(power_name) VALUES (#{powerName})
+	</insert>
+	
+</mapper>

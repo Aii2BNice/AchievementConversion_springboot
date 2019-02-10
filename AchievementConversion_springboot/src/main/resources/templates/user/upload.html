@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$.ajax({
+			type:'post',
+			url:'queryAllFile',
+			data:{},
+			contentType:'application/json;charset=utf-8',
+			success:function(data){
+				$("#tab").empty();
+				$("#tab").append("<tr><th>文件ID</th><th>文件名</th><th>操作</th></tr>");
+				for(var index in data){
+					$("#tab").append("<tr><td>" + data[index].fileId + "</td><td>" + 
+									 data[index].fileName + "</td><td>" + 
+									 "<a href=download/" + data[index].fileName + ">下载</a></td></tr>");
+				}
+			}
+		})
+		$("[type='button']").click(function(){
+			if($("[name='file']").val()==null || $("[name='file']").val()==""){
+				alert("请选择文件");
+			}else{
+				if($("[name='file']").val().indexOf(" ")>0){
+					alert("文件名不允许有空格");
+				}else{
+					$.ajax({
+						type:'post',
+						url:'upload',
+						cache:false,
+						processData:false,
+						contentType:false,
+						data:new FormData($("#form")[0]),
+						success:function(msg){
+							alert(msg);
+						}
+					})
+				}
+			}
+		});
+	})
+</script>
+</head>
+<body>
+	
+	<form id="form" action="upload" enctype="multipart/form-data" method="post">
+		<input type="file" name="file"/>
+		<input type="button" value="上传"/>
+	</form>
+	<br /><br />
+	<table id="tab"></table>
+	
+</body>
+</html>
