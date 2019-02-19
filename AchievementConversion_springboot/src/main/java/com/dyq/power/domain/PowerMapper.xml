@@ -13,14 +13,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 查询全部 -->
 	<select id="queryAllPower" resultMap="powerMap">
 		select * from power
+		<where>
+			<if test="powerName!=null and powerName!=''">
+				and power_name like "%"#{powerName}"%"
+			</if>
+		</where>
+		order by power_id
 	</select>
 	
 	<select id="queryPowerByName" resultMap="powerMap">
-		select * from power where power_name = #{powerName}
+		select * from power 
+		where power_name = #{powerName}
 	</select>
 	
 	<insert id="insertPower">
-		INSERT INTO power(power_name) VALUES (#{powerName})
+		INSERT INTO power(power_name) 
+		VALUES (#{powerName})
 	</insert>
+	
+	<update id="updatePower">
+		update power
+		set power_name = #{powerName}
+		where power_id = #{powerId}
+	</update>
+	
+	<delete id="deletePower">
+		delete from power
+		where power_id = #{powerId}
+	</delete>
 	
 </mapper>

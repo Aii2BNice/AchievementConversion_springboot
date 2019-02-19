@@ -1,44 +1,44 @@
 package com.dyq.power.controller;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.dyq.power.domain.Power;
 import com.dyq.power.service.PowerService;
 
-@RestController
+@Controller
 public class PowerController {
 	
 	@Autowired
 	private PowerService powerService;
 	
-	@RequestMapping("queryAllPower")
-	public List<Power> queryAllPower(){
-		return powerService.queryAllPower(null);
+	@RequestMapping("querypower")
+	public String queryPower(HttpServletRequest req,Power power) {
+		req.setAttribute("powers", powerService.queryAllPower(power));
+		req.setAttribute("powerName", power.getPowerName());
+		return "/system/power/querypower";
 	}
 	
-	@RequestMapping("VerPowerName")
-	public String VerPowerName(String powerName) {
-		String msg = "";
-		Power power = powerService.queryPowerByName(powerName);
-		if(power!=null) {
-			msg = "权限名已存在";
-		}
-		return msg;
+	@RequestMapping("toupdatePower")
+	public String toupdatepower(HttpServletRequest req,String powerName){
+		req.setAttribute("power", powerService.queryPowerByName(powerName));
+		return "/system/power/updatepower";
 	}
 	
-	@RequestMapping("insertPower")
-	public String insertPower(Power power) {
-		String msg = "";
-		int count = powerService.insertPower(power);
+	@RequestMapping("dodeletepower")
+	public String dodeletepower(HttpServletRequest req,Integer powerId){
+		int count = 0;
+		try {count = powerService.deletePower(powerId);}
+		catch(Exception e) { count = 0; }
 		if(count>0) {
-			msg = "权限添加成功";
+			req.setAttribute("msg", "权限删除成功");
 		}else {
-			msg = "权限添加失败";
+			req.setAttribute("msg", "权限删除失败");
 		}
-		return msg;
+		return "/system/power/querypower";
 	}
+	
 }

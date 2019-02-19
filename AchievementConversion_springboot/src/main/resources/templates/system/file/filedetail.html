@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
@@ -9,7 +9,6 @@
 <link rel="stylesheet" href="res/static/css/userinfo.css" />
 <link rel="stylesheet" href="css/buttons.css"/>
 <style type="text/css">
-	
 	ul li{font-size: 16px;line-height: 40px;}
 	ul li a:hover{color: #13E8E9;}
 	#upload-right{width: 650px;height: 300px;position: fixed;top: 100px;left:40%;padding-top: 15px;}
@@ -19,39 +18,10 @@
 <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 	$(function(){
-		$("#select").append("<option value=''>--请选择--</option>");
-		$("#select").css("width","145px");
 		$("#h2").css({"color":"white","position":"relative","left":"270px","top":"-10px"});
-		if($("#msg").text()!=""){
-			alert($("#msg").text());
-		}
-		$.ajax({
-			type:'post',
-			url:'queryAllPower',
-			data:{},
-			contentType:'application/json;charset=utf-8',
-			success:function(data){
-				for(var index in data){
-					$("#select").append("<option value="+data[index].powerId+">"+data[index].powerName+"</option>");
-				}
-			}
-		});
-		$(".delete").click(function(){
-			var $name = $(this).attr("title");
-			if(!confirm("是否要删除" + $name + "?")){
-				return false;
-			}
-		});
-		$("#add").click(function(){
-			location.href = "toadduser";
+		$("#return").click(function(){
+			location.href = "toexamfile";
 		})
-		function getJsonData(){
-			var json = {
-					"loginName":$("#loginName").val(),
-					"powerId":$("#select").val()
-			}
-			return json;
-		}
 	})
 </script>
 </head>
@@ -93,53 +63,57 @@
 			<ul>
 				<li><a href="toadminmessage">消息通知</a></li>
 				<li><a href="toselfupdate" th:href="@{toselfupdate(loginName=${session.user.loginName})}">个人管理</a></li>
-				<li><a href="toqueryuser" style="color: #13E8E9">用户管理</a></li>
+				<li><a href="toqueryuser">用户管理</a></li>
 				<li><a href="toquerypower">权限管理</a></li>
-				<li><a href="toexamfile">专利审核</a></li>
+				<li><a href="toexamfile" style="color: #13E8E9">专利审核</a></li>
 				<li><a href="toquerylogging">日志管理</a></li>
 				<li><a href="toexit">退出系统</a></li>
 			</ul>
 		</div>
 		<div id="upload-right">
-			<form action="queryAllLogin" method="post">
-				<table>
-					<tr>
-						<td width="50%">用户名：</td>
-							<td><input type="text" id="loginName" name="loginName"/></td>
-						</tr>
-					<tr>
-						<td>权限：</td>
-						<td><select id="select" name="powerId"></select></td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<input class="button button-pill button-primary" type="submit" value="查询"/>&nbsp;&nbsp;
-							<input id="add" class="button button-pill button-primary" type="button" value="添加"/>
-						</td>
-					</tr>
-				</table>
-			</form>
-			<br><br>
-			<h2 id="h2">用户信息查询</h2>
+			<h2 id="h2">提交专利详情</h2>
 			<table id="tab">
 				<tr>
-					<td>用户编号</td>
-					<td>用户登录名</td>
-					<td>密码</td>
-					<td>权限</td>
-					<td>操作</td>
+					<td>文件编号：</td>
+					<td th:text="${file.FileId}"></td>
 				</tr>
-				<tr th:each="login : ${logins}">
-					<td th:text="${login.loginId}"></td>
-					<td th:text="${login.loginName}"></td>
-					<td th:text="${login.pass}"></td>
-					<td th:text="${login.power.powerName}"></td>
-					<td>
-						<a href="toupdate" th:href="@{toupdate(loginName=${login.loginName})}">修改</a>&nbsp;&nbsp;
-						<a class="delete" href="dodelete" th:href="@{dodelete(loginId=${login.loginId})}" th:attr="title=${login.loginName}">删除</a>
+				<tr>
+					<td>文件名称：</td>
+					<td th:text="${file.fileName}"></td>
+				</tr>
+				<tr>
+					<td>提交者：</td>
+					<td th:text="${file.login.loginName}"></td>
+				</tr>
+				<tr>
+					<td>专利申请时间：</td>
+					<td th:text="${#dates.format(file.applyTime,'yyyy-MM-dd')}"></td>
+				</tr>
+				<tr>
+					<td>文件状态：</td>
+					<td th:text="${file.fileState.fileStateName}"></td>
+				</tr>
+				<tr>
+					<td>文件类型：</td>
+					<td th:text="${file.fileType.fileTypeName}"></td>
+				</tr>
+				<tr>
+					<td>专利报价：</td>
+					<td th:text="${file.filePrice} + '(万元)'"></td>
+				</tr>
+				<tr>
+					<td>专利描述：</td>
+					<td th:text="${file.fileIntroduce}"></td>
+				</tr>
+				<tr>
+					<td>文件提交时间：</td>
+					<td th:text="${#dates.format(file.fileUploadTime,'yyyy-MM-dd')}"></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input id="return" class="button button-pill button-primary" type="button" value="返回"/>
 					</td>
 				</tr>
-				<tr><td colspan="5" style="text-align: center;font-size: 15px;color: #4FC3F7;" th:if="${login==null}">暂无数据</td></tr>
 			</table>
 			<span id="msg" style="display: none;" th:text="${msg}"></span>
 		</div>

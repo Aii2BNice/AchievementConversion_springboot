@@ -99,36 +99,14 @@ public class UserController {
 	 */
 	@RequestMapping("toselfupdate")
 	public String toselfupdate(HttpServletRequest req,String loginName){
-		req.setAttribute("user",userService.queryLoginByName(loginName));
-		return "/system/admindetail";
-	}
-	
-	/**
-	 * 修改登录信息
-	 * @param req
-	 * @param login
-	 * @return
-	 */
-	@RequestMapping("modifylogin")
-	public String modifylogin(HttpServletRequest req,Login login) {
 		String url = "";
-		int count = 0;
-		try { 
-			Login log = userService.queryLoginByName(login.getLoginName());
-			login.setLoginId(log.getLoginId());
-			count = userService.updateLogin(login);
+		Login user = userService.queryLoginByName(loginName);
+		switch(user.getPowerId()) {
+		case 1:url = "/user/updateuser";break;
+		case 2:url = "/customer/updatecustomer";break;
+		case 3:url = "/system/admindetail";break;
 		}
-		catch(Exception e) { count = 0;}
-		finally {
-			if(count>0) { 
-				url = "/user/userpage";
-				req.getSession().setAttribute("user", login);
-			}
-			else { 
-				url = "/modifylogin";
-				req.setAttribute("msg", "用户信息修改失败，请重试");
-			}
-		}
+		req.setAttribute("user",user);
 		return url;
 	}
 	
@@ -187,6 +165,17 @@ public class UserController {
 	public String toexit(HttpServletRequest req,String loginName){
 		req.getSession().removeAttribute("user");
 		return "/login";
+	}
+	
+	@RequestMapping("toselfpage")
+	public String toSelfPage(Integer powerId) {
+		String url = "";
+		switch(powerId) {
+		case 1:url = "/user/userpage";break;
+		case 2:url = "/customer/customerpage";break;
+		case 3:url = "/system/adminpage";break;
+		}
+		return url;
 	}
 	
 }

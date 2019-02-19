@@ -25,6 +25,9 @@
 		if($("#msg").text()!=""){
 			alert($("#msg").text());
 		}
+		$("#add").click(function(){
+			location.href = "toaddpower";
+		})
 		$(".delete").click(function(){
 			var $name = $(this).attr("title");
 			if(!confirm("是否要删除" + $name + "?")){
@@ -52,7 +55,12 @@
           <li class="layui-nav-item"><a href="toindex">首页</a></li>
           <li class="layui-nav-item"><a href="tonews">动态</a></li>
           <li class="layui-nav-item"><a href="tocase">案例</a></li>
-          <li class="layui-nav-item layui-this"><a href="toselfpage" th:href="@{toselfpage(loginName=${session.user.loginName})}" th:text="${session.user.loginName}"></a></li>
+          <li class="layui-nav-item"><a href="tostatistics">统计</a></li>
+          <li class="layui-nav-item layui-this">
+          	<a th:if="${session.user==null}" href="tologin" id="login">登录</a>
+          	<a th:if="${session.user!=null}" th:href="@{toselfpage(powerId=${session.user.powerId})}"
+			   th:text="${session.user.loginName}"></a>
+          </li>
           <li class="layui-nav-item"><a href="toabout">关于</a></li>
         </ul>
       </div>
@@ -75,24 +83,39 @@
 			</ul>
 		</div>
 		<div id="upload-right">
-			<h2 id="h2">权限信息查询</h2>
-			<table id="tab">
+		<h2 id="h2">权限信息查询</h2>
+		<form action="querypower" method="post">
+			<table>
 				<tr>
-					<td>权限编号</td>
-					<td>权限名</td>
-					<td>操作</td>
+					<td width="50%">权限名:</td>
+					<td><input type="text" name="powerName" th:attr="value=${powerName}"/></td>
 				</tr>
-				<tr th:each="power : ${powers}">
-					<td th:text="${power.powerId}"></td>
-					<td th:text="${power.powerName}"></td>
-					<td>
-						<a href="toupdate" th:href="@{toupdatepower(powerId=${power.powerId})}">修改</a>&nbsp;&nbsp;
-						<a class="delete" href="dodeletepower" th:href="@{dodeletepower(powerId=${power.powerId})}" th:attr="title=${power.powerName}">删除</a>
+				<tr>
+					<td colspan="2">
+						<input id="query" class="button button-pill button-primary" type="submit" value="查询"/>&nbsp;&nbsp;
+						<input id="add" class="button button-pill button-primary" type="button" value="添加"/>
 					</td>
 				</tr>
-				<tr><td colspan="5" style="text-align: center;font-size: 15px;color: #4FC3F7;" th:if="${power==null}">暂无数据</td></tr>
 			</table>
-			<span id="msg" style="display: none;" th:text="${msg}"></span>
+		</form>
+		<br><br>
+		<table id="tab">
+			<tr>
+				<td>权限编号</td>
+				<td>权限名</td>
+				<td>操作</td>
+			</tr>
+			<tr th:each="power : ${powers}">
+				<td th:text="${power.powerId}"></td>
+				<td th:text="${power.powerName}"></td>
+				<td>
+					<a th:href="@{toupdatePower(powerName=${power.powerName})}">修改</a>&nbsp;&nbsp;
+					<a class="delete" th:href="@{dodeletepower(powerId=${power.powerId})}" th:attr="title=${power.powerName}">删除</a>
+				</td>
+			</tr>
+			<tr><td colspan="5" style="text-align: center;font-size: 15px;color: #4FC3F7;" th:if="${power==null}">暂无数据</td></tr>
+		</table>
+		<span id="msg" style="display: none;" th:text="${msg}"></span>
 		</div>
 	</div>
 	<div class="footer">

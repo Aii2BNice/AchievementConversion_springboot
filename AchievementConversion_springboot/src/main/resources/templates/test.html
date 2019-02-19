@@ -51,6 +51,17 @@
 	
 	<a class="a" href="test">123</a><br/><br/>
 	
+	<a th:if="${fileStateId != 1 && fileStateId != 4 }" >未审核</a>
+	<a th:if="${fileStateId == 2 || fileStateId == 3 }" >已审核</a>
+	<br/><br/>
+	
 	<span th:text="hahaa"></span>
+	
+	<input th:value="${date}" />
+	<input th:value="${#dates.format(date,'yyyy-MM-dd HH:mm:ss')}"/><br/><br/>
+	
+	<span th:text="${date}" ></span>
+	<span th:text="${#dates.format(date,'yyyy-MM-dd')}" ></span>
+	
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
@@ -26,8 +26,11 @@
           <li class="layui-nav-item"><a href="toindex">首页</a></li>
           <li class="layui-nav-item layui-this"><a href="tonews">动态</a></li>
           <li class="layui-nav-item"><a href="tocase">案例</a></li>
+          <li class="layui-nav-item"><a href="tostatistics">统计</a></li>
           <li class="layui-nav-item">
-          		<a href="tologin" id="login">登录</a>
+          	<a th:if="${session.user==null}" href="tologin" id="login">登录</a>
+          	<a th:if="${session.user!=null}" th:href="@{toselfpage(powerId=${session.user.powerId})}"
+			   th:text="${session.user.loginName}"></a>
           </li>
           <li class="layui-nav-item"><a href="toabout">关于</a></li>
         </ul>

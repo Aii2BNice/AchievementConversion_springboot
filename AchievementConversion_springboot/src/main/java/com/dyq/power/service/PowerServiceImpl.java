@@ -28,4 +28,14 @@ public class PowerServiceImpl implements PowerService{
 		return dao.queryPowerByName(powerName);
 	}
 
+	@Override
+	public int updatePower(Power power) {
+		return dao.updatePower(power);
+	}
+
+	@Override
+	public int deletePower(Integer powerId) {
+		return dao.deletePower(powerId);
+	}
+
 }

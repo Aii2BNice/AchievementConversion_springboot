@@ -1,15 +1,52 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html  xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
-<title>科研成果转化平台-首页</title>
-<link rel="icon" href="res/static/ico/pagelogo.ico" type="image/x-icon"/>
+<title>科研成果转化平台-管理员首页</title>
 <link rel="stylesheet" href="res/layui/css/layui.css">
 <link rel="stylesheet" href="res/static/css/index.css">
+<link rel="stylesheet" href="res/static/css/userinfo.css" />
+<link rel="stylesheet" href="css/buttons.css"/>
+<style type="text/css">
+	ul li{font-size: 16px;line-height: 40px;}
+	ul li a:hover{color: #13E8E9;}
+	#upload-right{width: 650px;height: 300px;position: fixed;top: 100px;left:40%;padding-top: 15px;}
+	#upload-left ul{font-size: 20px;color: 	#63B8FF;}
+	.exam{color: red;}	
+</style>
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#h2").css({"color":"white","position":"relative","left":"270px","top":"-10px"});
+		$("#alter").click(function(){
+			$.ajax({
+				type:'post',
+				url:'doupdateuser',
+				data:JSON.stringify(getJsonData()),
+				contentType:'application/json;charset=utf-8',
+				success:function(msg){
+					if(msg == "用户修改成功"){
+						alert(msg);
+					}else{
+						alert(msg);
+					}
+				}
+			});
+		});
+		function getJsonData(){
+			var json = {
+					"loginId":$("[name='loginId']").val(),
+					"loginName":$("[name='loginName']").val(),
+					"pass":$("[name='pass']").val(),
+			}
+			return json;
+		}
+	})
+</script>
 </head>
 <body>
-<!-- nav部分 -->
+  <!-- nav部分 -->
   <div class="nav index">
     <div class="layui-container">
       <!-- logo -->
@@ -23,11 +60,11 @@
           <span></span><span></span><span></span>
         </button>
         <ul class="layui-nav">
-          <li class="layui-nav-item layui-this"><a href="toindex">首页</a></li>
+          <li class="layui-nav-item"><a href="toindex">首页</a></li>
           <li class="layui-nav-item"><a href="tonews">动态</a></li>
           <li class="layui-nav-item"><a href="tocase">案例</a></li>
           <li class="layui-nav-item"><a href="tostatistics">统计</a></li>
-          <li class="layui-nav-item">
+          <li class="layui-nav-item layui-this">
           	<a th:if="${session.user==null}" href="tologin" id="login">登录</a>
           	<a th:if="${session.user!=null}" th:href="@{toselfpage(powerId=${session.user.powerId})}"
 			   th:text="${session.user.loginName}"></a>
@@ -37,70 +74,45 @@
       </div>
     </div>
   </div>
-  <!-- banner部分 -->
-  <div>
-    <div class="layui-carousel" id="banner">
-      <div>
-        <div>
-          <img src="res/static/img/banner1.jpg"/>
-          <div class="panel">
-            <p class="title">科研成果转化</p>
-            <p>成熟的成果转化平台</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- main部分 -->
-  <div class="main-product">
-    <div class="layui-container">
-      <p class="title">科研成果转化平台的<span>功能介绍</span></p>
-      <div class="layui-row layui-col-space25">
-        <div class="layui-col-sm6 layui-col-md3">
-          <div class="content">
-            <div><img src="res/static/img/Big_icon1.png"></div>
-            <div>
-              <p class="label">人才储备</p>
-              <p>与各大高校及科研机构合作，优秀的人才培养，出众的科研成果。</p>
-            </div>
-            <a href="javascript:;">查看详情 ></a>
-          </div>
-        </div>
-        <div class="layui-col-sm6 layui-col-md3 ">
-          <div class="content">
-            <div><img src="res/static/img/Big_icon2.png"></div>
-            <div>
-              <p class="label">转化过程</p>
-              <p>将科研成果转化为新兴的新技术、新材料、新工艺新产业</p>
-            </div>
-            <a href="javascript:;">查看详情 ></a>
-          </div>
-        </div>
-        <div class="layui-col-sm6 layui-col-md3 ">
-          <div class="content">
-            <div><img src="res/static/img/Big_icon4.png"></div>
-            <div>
-              <p class="label">转化后续</p>
-              <p>将科研成果转化为新技术之后，长达一年的后续跟踪调研</p>
-            </div>
-            <a href="#">查看详情 ></a>
-          </div>
-        </div>
-        <div class="layui-col-sm6 layui-col-md3 ">
-          <div class="content">
-            <div><img src="res/static/img/Big_icon3.png"></div>
-            <div>
-              <p class="label">资料储备</p>
-              <p>拥有强大的资料信息储备，丰富的参考资料，强有力的技术支持</p>
-            </div>
-            <a href="#">查看详情 ></a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- footer部分 -->
-  <div class="footer">
+  <!-- main部分   -->
+  
+  <div id="particles-js">
+		<div id="upload-left">
+			<h3 th:text="'欢迎   '+${session.user.loginName} + ' 登录  '"></h3>
+			<hr>
+			<ul>
+				<li><a href="tousermessage">消息通知</a></li>
+				<li><a href="toselfupdate" style="color: #13E8E9" th:href="@{toselfupdate(loginName=${session.user.loginName})}">个人管理</a></li>
+				<li><a href="tofileupload">专利上传</a></li>
+				<li><a href="tofilemanage">专利管理</a></li>
+				<li><a href="toexit">退出系统</a></li>
+			</ul>
+		</div>
+		<div id="upload-right">
+			<h2 id="h2">用户信息修改</h2>
+				<table id="tab">
+					<tr>
+						<td>用户登录名</td>
+						<td>
+							<input type="text" name="loginName" th:attr="value=${user.loginName}"/>
+							<input type="hidden" name="loginId" th:attr="value=${user.loginId}"/>
+						</td>
+					</tr>
+					<tr>
+						<td>用户密码</td>
+						<td>
+							<input type="text" name="pass" th:attr="value=${user.pass}"/>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<input id="alter" class="button button-pill button-primary" type="button" value="修改"/>
+						</td>
+					</tr>
+				</table>
+		</div>
+	</div>
+	<div class="footer">
     <div class="layui-container">
       <p class="footer-web">
         <a href="#">合作伙伴</a>

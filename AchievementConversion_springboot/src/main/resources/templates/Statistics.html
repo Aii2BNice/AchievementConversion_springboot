@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+<title>科研成果转化-案例</title>
+<link rel="stylesheet" href="../res/layui/css/layui.css">
+<link rel="stylesheet" href="../res/static/css/index.css">
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+<script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+<script src="../js/jquery-3.2.1.min.js"></script>
+<script>
+	$(function(){
+		
+	})
+</script>
+</head>
+<body>
+  <!-- nav部分 -->
+  <div class="nav">
+    <div class="layui-container">
+      <!-- 公司logo -->
+      <div class="nav-logo">
+        <a href="toindex">
+          <img src="../res/static/img/logo.png" alt="成果转化" height="55px">
+        </a>
+      </div>
+      <div class="nav-list">
+        <button>
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="layui-nav">
+          <li class="layui-nav-item"><a href="toindex">首页</a></li>
+          <li class="layui-nav-item"><a href="tonews">动态</a></li>
+          <li class="layui-nav-item"><a href="tocase">案例</a></li>
+          <li class="layui-nav-item layui-this"><a href="tostatistics">统计</a></li>
+          <li class="layui-nav-item">
+          	<a th:if="${session.user==null}" href="tologin" id="login">登录</a>
+          	<a th:if="${session.user!=null}" th:href="@{toselfpage(powerId=${session.user.powerId})}"
+			   th:text="${session.user.loginName}"></a>
+          </li>
+          <li class="layui-nav-item"><a href="toabout">关于</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- banner部分 -->
+  <div class="banner case">
+    <div class="title">
+      <p>统计</p>
+      <p class="en">Statistics</p>
+    </div>
+  </div>
+  <!-- main部分 -->
+  
+  <h2 style="position: absolute;left: 600px;">2011-2018年专利提交与转化柱状图</h2><br /><br />
+	<div id="container2" style="height: 600px;width: 100%;"></div>
+  <div id="container1" style="height: 600px;width: 100%;"></div>
+  
+  <!-- footer部分 -->
+  <div class="footer">
+    <div class="layui-container">
+      <p class="footer-web">
+        <a href="#">合作伙伴</a>
+        <a href="#">清华大学</a>
+        <a href="#">北京大学</a>
+        <a href="#">复旦大学</a>
+        <a href="#">大连科研成果转化技术有限公司</a>
+        <a href="#">沈阳成果转化技术有限公司</a>
+        <a href="#">北京科研转化有限公司</a>
+      </p>
+      <div class="layui-row footer-contact">
+        <div class="layui-col-sm2 layui-col-lg1"><img src="../res/static/img/erweima.jpg"></div>
+        <div class="layui-col-sm10 layui-col-lg11">
+          <div class="layui-row">
+            <div class="layui-col-sm6 layui-col-md8 layui-col-lg9">
+              <p class="contact-top"><i class="layui-icon layui-icon-cellphone"></i>&nbsp;400-1234567&nbsp;&nbsp;&nbsp;(9:00-18:00)</p>
+              <p class="contact-bottom"><i class="layui-icon layui-icon-home"></i>&nbsp;1234567@163.com</p>
+            </div>
+            <div class="layui-col-sm6 layui-col-md4 layui-col-lg3">
+              <p class="contact-top"><span class="right">大连高新园区</span></p>
+              <p class="contact-bottom"><span class="right">Copyright&nbsp;©&nbsp;2018-2020 More Templates </span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<script src="../res/layui/layui.js"></script>
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script>
+  layui.config({
+    base: '../res/static/js/' 
+  }).use('firm'); 
+</script>
+<script type="text/javascript">
+			var dom = document.getElementById("container1");
+			var myChart = echarts.init(dom);
+			var app = {};
+			option = null;
+			option = {
+				backgroundColor: '#46485f',
+
+				title: {
+					text: '提交专利分类图(2011-2018)',
+					left: 'center',
+					top: 90,
+					textStyle: {
+						color: '#ccc'
+					}
+				},
+
+				tooltip: {
+					trigger: 'item',
+					formatter: "{a} <br/>{b} : {c} ({d}%)"
+				},
+
+				visualMap: {
+					show: false,
+					min: 80,
+					max: 600,
+					inRange: {
+						colorLightness: [0, 1]
+					}
+				},
+				series: [{
+					name: '成果提交',
+					type: 'pie',
+					radius: '55%',
+					center: ['50%', '50%'],
+					data: [{
+							value: 335,
+							name: '应用基础研究'
+						},
+						{
+							value: 310,
+							name: '科技攻关项目'
+						},
+						{
+							value: 274,
+							name: '软科学研究项目'
+						},
+						{
+							value: 235,
+							name: '其他类'
+						},
+						{
+							value: 400,
+							name: '技术开发项目'
+						}
+					].sort(function(a, b) {
+						return a.value - b.value;
+					}),
+					roseType: 'radius',
+					label: {
+						normal: {
+							textStyle: {
+								color: 'rgba(255, 255, 255, 0.3)'
+							}
+						}
+					},
+					labelLine: {
+						normal: {
+							lineStyle: {
+								color: 'rgba(255, 255, 255, 0.3)'
+							},
+							smooth: 0.1,
+							length: 10,
+							length2: 20
+						}
+					},
+					itemStyle: {
+						normal: {
+							color: '#4169e1',
+							shadowBlur: 200,
+							shadowColor: 'rgba(0, 0, 0, 0.5)'
+						}
+					},
+
+					animationType: 'scale',
+					animationEasing: 'elasticOut',
+					animationDelay: function(idx) {
+						return Math.random() * 200;
+					}
+				}]
+			};;
+			if(option && typeof option === "object") {
+				myChart.setOption(option, true);
+			}
+		</script>
+		
+		<script type="text/javascript">
+			var dom = document.getElementById("container2");
+			var myChart = echarts.init(dom);
+			var app = {};
+			option = null;
+			var xAxisData = [];
+			var data1 = [];
+			var data2 = [];
+			for(var i = 90; i < 98; i++) {
+				xAxisData.push('20' + (i-79) + '年');
+				data1.push((Math.sin(i / 5) * (i / 5 - 6) + i / 6) * 5);
+				data2.push((Math.cos(i / 5) * (i / 5 - 6) + i / 6) * 5);
+			}
+
+			option = {
+				title: {
+					text: ''
+				},
+				legend: {
+					data: ['成果转化数量', '成果提交数量'],
+					align: 'left'
+				},
+				toolbox: {
+					// y: 'bottom',
+					feature: {
+						magicType: {
+							type: ['stack', 'tiled']
+						},
+						dataView: {},
+						saveAsImage: {
+							pixelRatio: 2
+						}
+					}
+				},
+				tooltip: {},
+				xAxis: {
+					data: xAxisData,
+					silent: false,
+					splitLine: {
+						show: false
+					}
+				},
+				yAxis: {},
+				series: [{
+					name: '成果转化数量',
+					type: 'bar',
+					data: data1,
+					animationDelay: function(idx) {
+						return idx * 10;
+					}
+				}, {
+					name: '成果提交数量',
+					type: 'bar',
+					data: data2,
+					animationDelay: function(idx) {
+						return idx * 10 + 100;
+					}
+				}],
+				animationEasing: 'elasticOut',
+				animationDelayUpdate: function(idx) {
+					return idx * 5;
+				}
+			};;
+			if(option && typeof option === "object") {
+				myChart.setOption(option, true);
+			}
+		</script>
+		
+</body>
+</html>

@@ -8,15 +8,82 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<resultMap type="fileinfo" id="fileMap">
 		<id property="fileId" column="file_id"/>
 		<id property="fileName" column="file_name"/>
+		<id property="loginId" column="login_id"/>
+		<id property="applyTime" column="apply_time"/>
+		<id property="fileStateId" column="file_state_id"/>
+		<id property="fileTypeId" column="file_type_id"/>
+		<id property="filePrice" column="file_price"/>
+		<id property="fileIntroduce" column="file_introduce"/>
+		<id property="fileUploadTime" column="file_upload_time"/>
+		<id property="fileRealName" column="file_realname"/>
+		<association property="login" select="queryLogin" column="login_id" />
+		<association property="fileState" select="queryState" column="file_state_id" />
+		<association property="fileType" select="queryType" column="file_type_id" />
 	</resultMap>
+	<resultMap type="login" id="loginMap">
+		<id property="loginId" column="login_id"/>
+		<id property="loginName" column="login_name"/>
+		<id property="powerId" column="power_id"/>
+	</resultMap>
+	<resultMap type="filestate" id="fileStateMap">
+		<id property="fileStateId" column="file_state_id"/>
+		<id property="fileStateName" column="file_state_name"/>
+	</resultMap>
+	<resultMap type="filetype" id="fileTypeMap">
+		<id property="fileTypeId" column="file_type_id"/>
+		<id property="fileTypeName" column="file_type_name"/>
+	</resultMap>
+	<select id="queryLogin" resultMap="loginMap">
+		select * from login where login_id = #{loginId}
+	</select>
+	<select id="queryState" resultMap="fileStateMap">
+		select * from file_state where file_state_id = #{fileStateId}
+	</select>
+	<select id="queryType" resultMap="fileTypeMap">
+		select * from file_type where file_type_id = #{fileTypeId}
+	</select>
 	
+	<select id="queryAllState" resultMap="fileStateMap">
+		select * from file_state
+	</select>
+	<select id="queryAllType" resultMap="fileTypeMap">
+		select * from file_type
+	</select>
+	
+	<!-- 查询所有 -->
 	<select id="queryAllFile" resultMap="fileMap">
 		select * from fileinfo
+		<where>
+			<if test="fileStateId!=null and fileStateId!=''">
+				and file_state_id = #{fileStateId}
+			</if>
+			<if test="fileTypeId!=null and fileTypeId!=''">
+				and file_type_id = #{fileTypeId}
+			</if>
+			<if test="fileUploadTimeBegin!=null and fileUploadTimeEnd!=null">
+				file_upload_time between #{fileUploadTimeBegin} and #{fileUploadTimeEnd}
+			</if>
+			<if test="loginId!=null and loginId!=''">
+				and login_id = #{loginId}
+			</if>
+		</where>
+		order by file_id
+	</select>
+	
+	<select id="queryFileById" resultMap="fileMap">
+		select * from fileinfo where file_id = #{fileId}
 	</select>
 	
 	<insert id="insertFile">
-		INSERT INTO fileinfo (file_name) 
-		VALUES (#{fileName})
+		INSERT INTO fileinfo
+		VALUES (#{fileId},#{fileName},#{loginId},#{applyTime},1,#{fileTypeId},
+				#{fileIntroduce},now(),#{fileRealName},#{filePrice})
 	</insert>
+	
+	<update id="updateFileState">
+		update fileinfo
+		set file_state_Id = #{fileStateId}
+		where file_id = #{fileId}
+	</update>
 	
 </mapper>

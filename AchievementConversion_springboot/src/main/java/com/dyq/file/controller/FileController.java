@@ -1,80 +1,75 @@
 package com.dyq.file.controller;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.dyq.file.domain.FileInfo;
 import com.dyq.file.service.FileService;
+import com.dyq.user.domain.Login;
+import com.dyq.user.service.UserService;
 
-@RestController
+@Controller
 public class FileController {
-	
+
 	@Autowired
 	private FileService fileService;
-	
-	private String path = "C:/fileupload";
-	
-	@RequestMapping("upload")
-	public String uploadFile(MultipartFile file) throws IllegalStateException, IOException {
-		
-		String fileName = file.getOriginalFilename();
-		String msg = "";
-		File dest = new File(path + "/" + fileName);
-		if(!dest.getParentFile().exists()) {
-			dest.getParentFile().mkdir();
-		}
-		if(!dest.exists()) {
-			file.transferTo(dest);
-			fileService.insertFile(new FileInfo(null,fileName));
-			msg = "文件上传成功";
-		}else {
-			msg = "文件已存在";
-		}
-		return msg;
-	}
-	
-	@RequestMapping("download/{fileName}")
-	public String downloadFile(@PathVariable String fileName,HttpServletResponse resp) throws Exception {
-		
-		File dest = new File(path + "/" + fileName);
-		if(dest.exists()) {
-			
-			resp.setContentType("application/x-msdownload");
-			resp.setHeader("Content-Disposition", "attachment;filename="+new String(fileName.getBytes("utf-8"),"ISO-8859-1"));
-			//缓冲
-			byte [] buffer = new byte[1024];
-			//文件输入输出流
-			FileInputStream fis = new FileInputStream(dest);
-			OutputStream os = resp.getOutputStream();
-			BufferedInputStream bis = new BufferedInputStream(fis);
-			int i = bis.read(buffer);
-			while(i!=-1) {
-				os.write(buffer);
-				i = bis.read(buffer);
-			}
-			bis.close();
-			fis.close();
-			System.out.println("文件下载成功");
-		}
-		return null;
-	}
+	@Autowired
+	private UserService userService;
 	
 	@RequestMapping("queryAllFile")
-	public List<FileInfo> queryAllFile(){
-		return fileService.queryAllFile(null); 
+	public String queryAllFile(HttpServletRequest req,FileInfo file,String loginName){
+		String url = "";
+		Login user = userService.queryLoginByName(loginName);
+		switch(user.getPowerId()) {
+		case 1:
+			url = "/user/filemanage";
+			file.setLoginId(user.getLoginId());
+			break;
+		case 2:url = "/customer/filemanage";break;
+		case 3:url = "/system/file/queryfile";break;
+		}
+		req.setAttribute("files", fileService.queryAllFile(file));
+		return url; 
 	}
+	
+	@RequestMapping("tofiledetail")
+	public String toFileDetail(HttpServletRequest req,Integer fileId){
+		req.setAttribute("file",fileService.queryFileById(fileId));
+		return "/system/file/filedetail"; 
+	}
+	
+	@RequestMapping("adopt")
+	public String adopt(HttpServletRequest req,Integer fileId){
+		int count = 0;
+		String msg = "";
+		count = fileService.updateFileState(fileId,2);
+		if(count > 0) {
+			msg = "文件审核成功";
+		}else {
+			msg = "文件审核失败";
+		}
+		req.setAttribute("msg", msg);
+		return "/system/file/queryfile"; 
+	}
+	
+	@RequestMapping("reject")
+	public String reject(HttpServletRequest req,Integer fileId){
+		int count = 0;
+		String msg = "";
+		try {count = fileService.updateFileState(fileId,3);}
+		catch(Exception e) {count = 0;};
+		if(count > 0) {
+			msg = "文件驳回成功";
+		}else {
+			msg = "文件驳回失败";
+		}
+		req.setAttribute("msg", msg);
+		return "/system/file/queryfile"; 
+	}
+	
 	
 	
 }

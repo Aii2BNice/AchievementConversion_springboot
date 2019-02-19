@@ -19,7 +19,6 @@
 <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 	$(function(){
-		$("[type='submit']").css({"height":"45px","font-size":"18px","border-radius":"5px"});
 		$("#msg1").css("color","red");
 		$("[name='loginName']").blur(function(){
 			$.ajax({
@@ -32,6 +31,9 @@
 					$("#msg1").html(msg);
 				}
 			});
+		});
+		$("#return").click(function(){
+			location.href = "toqueryuser";
 		})
 		function getJsonData(){
 			var json = { "loginName":$("[name='loginName']").val() }
@@ -58,7 +60,12 @@
           <li class="layui-nav-item"><a href="toindex">首页</a></li>
           <li class="layui-nav-item"><a href="tonews">动态</a></li>
           <li class="layui-nav-item"><a href="tocase">案例</a></li>
-          <li class="layui-nav-item layui-this"><a href="toselfpage" th:href="@{toselfpage(loginName=${session.user.loginName})}" th:text="${session.user.loginName}"></a></li>
+          <li class="layui-nav-item"><a href="tostatistics">统计</a></li>
+          <li class="layui-nav-item layui-this">
+          	<a th:if="${session.user==null}" href="tologin" id="login">登录</a>
+          	<a th:if="${session.user!=null}" th:href="@{toselfpage(powerId=${session.user.powerId})}"
+			   th:text="${session.user.loginName}"></a>
+          </li>
           <li class="layui-nav-item"><a href="toabout">关于</a></li>
         </ul>
       </div>
@@ -85,7 +92,7 @@
 			<form action="register" method="post">
 				<table id="tab">
 					<tr>
-						<td>用户登录名</td>
+						<td width="50%">用户登录名</td>
 						<td>
 							<input type="text" name="loginName"/><span id="msg1"></span>
 						</td>
@@ -108,11 +115,9 @@
 					</tr>
 					<tr>
 						<td colspan="2">
-							<input class="button button-pill button-primary" type="submit" value="添加"/>
+							<input class="button button-pill button-primary" type="submit" value="添加"/>&nbsp;&nbsp;
+							<input id="return" class="button button-pill button-primary" type="button" value="返回"/>
 						</td>
-					</tr>
-					<tr>
-						<td colspan="2"><a href="toqueryuser">返回</a></td>
 					</tr>
 				</table>
 			</form>

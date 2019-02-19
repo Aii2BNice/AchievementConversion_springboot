@@ -40,7 +40,12 @@
           <li class="layui-nav-item"><a href="toindex">首页</a></li>
           <li class="layui-nav-item"><a href="tonews">动态</a></li>
           <li class="layui-nav-item"><a href="tocase">案例</a></li>
-          <li class="layui-nav-item layui-this"><a href="toselfpage" th:href="@{toselfpage(loginName=${session.user.loginName})}" th:text="${session.user.loginName}"></a></li>
+          <li class="layui-nav-item"><a href="tostatistics">统计</a></li>
+          <li class="layui-nav-item layui-this">
+          	<a th:if="${session.user==null}" href="tologin" id="login">登录</a>
+          	<a th:if="${session.user!=null}" th:href="@{toselfpage(powerId=${session.user.powerId})}"
+			   th:text="${session.user.loginName}"></a>
+          </li>
           <li class="layui-nav-item"><a href="toabout">关于</a></li>
         </ul>
       </div>
@@ -50,7 +55,7 @@
   
   <div id="particles-js">
 		<div id="upload-left">
-			<h3 th:text="'欢迎   '+${session.user.loginName} + ' 登录  '"></h3>
+			<h3>欢迎 : <span id="sp" th:text="${session.user.loginName}"></span>登录</h3>
 			<hr>
 			<ul>
 				<li><a href="toadminmessage" style="color: #13E8E9">消息通知</a></li>

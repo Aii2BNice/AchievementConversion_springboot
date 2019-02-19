@@ -9,46 +9,51 @@
 <link rel="stylesheet" href="res/static/css/userinfo.css" />
 <link rel="stylesheet" href="css/buttons.css"/>
 <style type="text/css">
-	
 	ul li{font-size: 16px;line-height: 40px;}
 	ul li a:hover{color: #13E8E9;}
 	#upload-right{width: 650px;height: 300px;position: fixed;top: 100px;left:40%;padding-top: 15px;}
 	#upload-left ul{font-size: 20px;color: 	#63B8FF;}
 	.exam{color: red;}	
+	#h2{color:white;position:relative;left:270px;top:-10px;}
 </style>
 <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 	$(function(){
-		$("#select").append("<option value=''>--请选择--</option>");
-		$("#select").css("width","145px");
-		$("#h2").css({"color":"white","position":"relative","left":"270px","top":"-10px"});
-		if($("#msg").text()!=""){
-			alert($("#msg").text());
-		}
-		$.ajax({
-			type:'post',
-			url:'queryAllPower',
-			data:{},
-			contentType:'application/json;charset=utf-8',
-			success:function(data){
-				for(var index in data){
-					$("#select").append("<option value="+data[index].powerId+">"+data[index].powerName+"</option>");
+		$("[name='powerName']").blur(function(){
+			$.ajax({
+				type:'post',
+				url:'verPowerName',
+				data:JSON.stringify(getJsonData()),
+				contentType:'application/json;charset=utf-8',
+				success:function(msg){
+					$("#msg1").empty();
+					$("#msg1").html(msg);
 				}
-			}
+			});
 		});
-		$(".delete").click(function(){
-			var $name = $(this).attr("title");
-			if(!confirm("是否要删除" + $name + "?")){
-				return false;
-			}
+		$("#update").click(function(){
+			$.ajax({
+				type:'post',
+				url:'updatePower',
+				data:JSON.stringify(getJsonData()),
+				contentType:'application/json;charset=utf-8',
+				success:function(msg){
+					if(msg == "权限修改成功"){
+						alert(msg);
+						location.href = "toquerypower";
+					}else{
+						alert(msg);
+					}
+				}
+			});
 		});
-		$("#add").click(function(){
-			location.href = "toadduser";
+		$("#return").click(function(){
+			location.href = "toquerypower";
 		})
 		function getJsonData(){
 			var json = {
-					"loginName":$("#loginName").val(),
-					"powerId":$("#select").val()
+					"powerId":$("[name='powerId']").val(),
+					"powerName":$("[name='powerName']").val()
 			}
 			return json;
 		}
@@ -92,56 +97,31 @@
 			<hr>
 			<ul>
 				<li><a href="toadminmessage">消息通知</a></li>
-				<li><a href="toselfupdate" th:href="@{toselfupdate(loginName=${session.user.loginName})}">个人管理</a></li>
-				<li><a href="toqueryuser" style="color: #13E8E9">用户管理</a></li>
-				<li><a href="toquerypower">权限管理</a></li>
+				<li><a href="tomodifylogin" th:href="@{tomodifylogin(loginName=${session.user.loginName})}">个人管理</a></li>
+				<li><a href="toqueryuser">用户管理</a></li>
+				<li><a href="toquerypower" style="color: #13E8E9">权限管理</a></li>
 				<li><a href="toexamfile">专利审核</a></li>
 				<li><a href="toquerylogging">日志管理</a></li>
 				<li><a href="toexit">退出系统</a></li>
 			</ul>
 		</div>
 		<div id="upload-right">
-			<form action="queryAllLogin" method="post">
-				<table>
+			<h2 id="h2">权限信息修改</h2>
+				<table id="tab">
 					<tr>
-						<td width="50%">用户名：</td>
-							<td><input type="text" id="loginName" name="loginName"/></td>
-						</tr>
-					<tr>
-						<td>权限：</td>
-						<td><select id="select" name="powerId"></select></td>
+						<td width="50%">权限名</td>
+						<td>
+							<input type="text" name="powerName" th:attr="value=${power.powerName}"/>
+							<input type="hidden" name="powerId" th:attr="value=${power.powerId}"/>
+						</td>
 					</tr>
 					<tr>
 						<td colspan="2">
-							<input class="button button-pill button-primary" type="submit" value="查询"/>&nbsp;&nbsp;
-							<input id="add" class="button button-pill button-primary" type="button" value="添加"/>
+							<input id="update" class="button button-pill button-primary" type="button" value="修改"/>&nbsp;&nbsp;
+							<input id="return" class="button button-pill button-primary" type="button" value="返回"/>
 						</td>
 					</tr>
 				</table>
-			</form>
-			<br><br>
-			<h2 id="h2">用户信息查询</h2>
-			<table id="tab">
-				<tr>
-					<td>用户编号</td>
-					<td>用户登录名</td>
-					<td>密码</td>
-					<td>权限</td>
-					<td>操作</td>
-				</tr>
-				<tr th:each="login : ${logins}">
-					<td th:text="${login.loginId}"></td>
-					<td th:text="${login.loginName}"></td>
-					<td th:text="${login.pass}"></td>
-					<td th:text="${login.power.powerName}"></td>
-					<td>
-						<a href="toupdate" th:href="@{toupdate(loginName=${login.loginName})}">修改</a>&nbsp;&nbsp;
-						<a class="delete" href="dodelete" th:href="@{dodelete(loginId=${login.loginId})}" th:attr="title=${login.loginName}">删除</a>
-					</td>
-				</tr>
-				<tr><td colspan="5" style="text-align: center;font-size: 15px;color: #4FC3F7;" th:if="${login==null}">暂无数据</td></tr>
-			</table>
-			<span id="msg" style="display: none;" th:text="${msg}"></span>
 		</div>
 	</div>
 	<div class="footer">

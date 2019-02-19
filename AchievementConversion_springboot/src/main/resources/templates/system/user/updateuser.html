@@ -19,7 +19,7 @@
 <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 	$(function(){
-		$("[type='button']").click(function(){
+		$("#update").click(function(){
 			$.ajax({
 				type:'post',
 				url:'doupdateuser',
@@ -35,6 +35,9 @@
 				}
 			});
 		});
+		$("#return").click(function(){
+			location.href = "toqueryuser";
+		})
 		function getJsonData(){
 			var json = {
 					"loginId":$("[name='loginId']").val(),
@@ -65,7 +68,12 @@
           <li class="layui-nav-item"><a href="toindex">首页</a></li>
           <li class="layui-nav-item"><a href="tonews">动态</a></li>
           <li class="layui-nav-item"><a href="tocase">案例</a></li>
-          <li class="layui-nav-item layui-this"><a href="toselfpage" th:href="@{toselfpage(loginName=${session.user.loginName})}" th:text="${session.user.loginName}"></a></li>
+          <li class="layui-nav-item"><a href="tostatistics">统计</a></li>
+          <li class="layui-nav-item layui-this">
+          	<a th:if="${session.user==null}" href="tologin" id="login">登录</a>
+          	<a th:if="${session.user!=null}" th:href="@{toselfpage(powerId=${session.user.powerId})}"
+			   th:text="${session.user.loginName}"></a>
+          </li>
           <li class="layui-nav-item"><a href="toabout">关于</a></li>
         </ul>
       </div>
@@ -78,12 +86,10 @@
 			<h3 th:text="'欢迎   '+${session.user.loginName} + ' 登录  '"></h3>
 			<hr>
 			<ul>
-				<li><a href="toadminmessage">消息通知</a></li>
-				<li><a href="tomodifylogin" th:href="@{tomodifylogin(loginName=${session.user.loginName})}">个人管理</a></li>
-				<li><a href="toqueryuser" style="color: #13E8E9">用户管理</a></li>
-				<li><a href="toquerypower">权限管理</a></li>
-				<li><a href="toexamfile">专利审核</a></li>
-				<li><a href="toquerylogging">日志管理</a></li>
+				<li><a href="tousermessage">消息通知</a></li>
+				<li><a href="toselfupdate" style="color: #13E8E9" th:href="@{toselfupdate(loginName=${session.user.loginName})}">个人管理</a></li>
+				<li><a href="tofileupload">专利上传</a></li>
+				<li><a href="tofilemanage">专利管理</a></li>
 				<li><a href="toexit">退出系统</a></li>
 			</ul>
 		</div>
@@ -91,7 +97,7 @@
 			<h2 id="h2">用户信息修改</h2>
 				<table id="tab">
 					<tr>
-						<td>用户登录名</td>
+						<td width="50%">用户登录名</td>
 						<td>
 							<input type="text" name="loginName" th:attr="value=${user.loginName}"/>
 							<input type="hidden" name="loginId" th:attr="value=${user.loginId}"/>
@@ -115,11 +121,9 @@
 					</tr>
 					<tr>
 						<td colspan="2">
-							<input class="button button-pill button-primary" type="button" value="修改"/>
+							<input id="update" class="button button-pill button-primary" type="button" value="修改"/>
+							<input id="return" class="button button-pill button-primary" type="button" value="返回"/>
 						</td>
-					</tr>
-					<tr>
-						<td colspan="2"><a href="toqueryuser">返回</a></td>
 					</tr>
 				</table>
 		</div>

@@ -10,5 +10,7 @@ public interface PowerMapper {
 	List<Power> queryAllPower(Power power);
 	Power queryPowerByName(String powerName);
 	int insertPower(Power power);
+	int updatePower(Power power);
+	int deletePower(Integer powerId);
 	
 }
