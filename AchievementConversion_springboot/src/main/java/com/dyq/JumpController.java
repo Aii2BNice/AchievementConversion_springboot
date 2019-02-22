@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class JumpController {
 	
 	//首页跳转
-	
 	@RequestMapping("toabout")
 	public String toabout(){ return "/about";}
 	@RequestMapping("toindex")
@@ -50,8 +49,6 @@ public class JumpController {
 	public String toaddpower(){ return "/system/power/addpower";}
 	
 	//审核跳转
-	@RequestMapping("toexamfile")
-	public String toexamfile(){ return "/system/file/queryfile";}
 	@RequestMapping("tofileupload")
 	public String tofileupload(){ return "/user/fileupload";}
 	@RequestMapping("tofilemanage")

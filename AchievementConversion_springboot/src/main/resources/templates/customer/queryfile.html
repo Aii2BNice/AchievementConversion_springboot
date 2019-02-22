@@ -18,10 +18,34 @@
 <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 	$(function(){
+		$("select").append("<option value=''>--请选择--</option>");
+		$("select").css("width","145px");
 		$("#h2").css({"color":"white","position":"relative","left":"270px","top":"-10px"});
-		$("#return").click(function(){
-			location.href = "toexamfile?loginName=" + $("#name").text();
-		})
+		if($("#msg").text()!=""){
+			alert($("#msg").text());
+		}
+		$.ajax({
+			type:'post',
+			url:'queryAllState',
+			data:{},
+			contentType:'application/json;charset=utf-8',
+			success:function(data){
+				for(var index in data){
+					$("[name='fileStateId']").append("<option value="+data[index].fileStateId+">"+data[index].fileStateName+"</option>");
+				}
+			}
+		});
+		$.ajax({
+			type:'post',
+			url:'queryAllType',
+			data:{},
+			contentType:'application/json;charset=utf-8',
+			success:function(data){
+				for(var index in data){
+					$("[name='fileTypeId']").append("<option value="+data[index].fileTypeId+">"+data[index].fileTypeName+"</option>");
+				}
+			}
+		});
 	})
 </script>
 </head>
@@ -58,7 +82,7 @@
   
   <div id="particles-js">
 		<div id="upload-left">
-			<h3><span>欢迎  <span id="name" th:text="${session.user.loginName}"></span> 登录</span></h3>
+			<h3 th:text="'欢迎   '+${session.user.loginName} + ' 登录  '"></h3>
 			<hr>
 			<ul>
 				<li><a href="tocustomermessage">消息通知</a></li>
@@ -69,49 +93,56 @@
 			</ul>
 		</div>
 		<div id="upload-right">
-			<h2 id="h2">提交专利详情</h2>
+			<form action="queryAllFile" method="post">
+				<table>
+					<tr>
+						<td width="50%">文件状态：</td>
+							<td><select name="fileStateId"></select></td>
+						</tr>
+					<tr>
+						<td>文件类型：</td>
+						<td><select name="fileTypeId"></select></td>
+					</tr>
+					<tr>
+						<td>上传时间：</td>
+						<td>
+							<input type="date" name="fileUploadTimeBegin"/> -
+							<input type="date" name="fileUploadTimeEnd"/>
+							<input type="hidden" th:value="${session.user.loginName}" name="loginName"/>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<input class="button button-pill button-primary" type="submit" value="查询"/>
+						</td>
+					</tr>
+				</table>
+			</form>
+			<br><br>
+			<h2 id="h2">提交专利查询</h2>
 			<table id="tab">
 				<tr>
-					<td>文件编号：</td>
+					<td>文件编号</td>
+					<td>文件名</td>
+					<td>提交者</td>
+					<td>专利简介</td>
+					<td>提交时间</td>
+					<td>操作</td>
+				</tr>
+				<tr th:each="file : ${files}">
 					<td th:text="${file.FileId}"></td>
-				</tr>
-				<tr>
-					<td>文件名称：</td>
 					<td th:text="${file.fileName}"></td>
-				</tr>
-				<tr>
-					<td>提交者：</td>
 					<td th:text="${file.login.loginName}"></td>
-				</tr>
-				<tr>
-					<td>专利申请时间：</td>
-					<td th:text="${#dates.format(file.applyTime,'yyyy-MM-dd')}"></td>
-				</tr>
-				<tr>
-					<td>文件状态：</td>
-					<td th:text="${file.fileState.fileStateName}"></td>
-				</tr>
-				<tr>
-					<td>文件类型：</td>
-					<td th:text="${file.fileType.fileTypeName}"></td>
-				</tr>
-				<tr>
-					<td>专利报价：</td>
-					<td th:text="${file.filePrice} + '(万元)'"></td>
-				</tr>
-				<tr>
-					<td>专利描述：</td>
 					<td th:text="${file.fileIntroduce}"></td>
-				</tr>
-				<tr>
-					<td>文件提交时间：</td>
 					<td th:text="${#dates.format(file.fileUploadTime,'yyyy-MM-dd')}"></td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<input id="return" class="button button-pill button-primary" type="button" value="返回"/>
+					<td>
+						<a th:href="@{download(fileId=${file.FileId})}">下载</a>&nbsp;&nbsp;
+						<a th:href="@{tofiledetail(fileId=${file.FileId})}">详情</a><br>
+						<a th:href="@{adopt(fileId=${file.FileId})}">通过</a>&nbsp;&nbsp;
+						<a th:href="@{reject(fileId=${file.FileId})}">驳回</a>
 					</td>
 				</tr>
+				<tr><td colspan="6" style="text-align: center;font-size: 15px;color: #4FC3F7;" th:if="${files==null}">暂无数据</td></tr>
 			</table>
 			<span id="msg" style="display: none;" th:text="${msg}"></span>
 		</div>

@@ -28,7 +28,7 @@ public class FileController {
 			url = "/user/filemanage";
 			file.setLoginId(user.getLoginId());
 			break;
-		case 2:url = "/customer/filemanage";break;
+		case 2:url = "/customer/queryfile";break;
 		case 3:url = "/system/file/queryfile";break;
 		}
 		req.setAttribute("files", fileService.queryAllFile(file));
@@ -70,6 +70,15 @@ public class FileController {
 		return "/system/file/queryfile"; 
 	}
 	
-	
+	@RequestMapping("toexamfile")
+	public String toexamfile(HttpServletRequest req,String loginName){ 
+		String url = "";
+		Login user = userService.queryLoginByName(loginName);
+		switch(user.getPowerId()) {
+		case 2:url = "/customer/queryfile";break;
+		case 3:url = "/system/file/queryfile";break;
+		}
+		return url;
+	}
 	
 }
