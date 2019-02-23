@@ -1,9 +1,5 @@
 package com.dyq;
 
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -57,14 +53,6 @@ public class JumpController {
 	//日志跳转
 	@RequestMapping("toquerylogging")
 	public String toquerylogging(){ return "/system/logging/querylogging";}
-	
-	
-	@RequestMapping("test")
-	public String test(HttpServletRequest req){ 
-		req.setAttribute("date", new Date());
-		req.setAttribute("fileStateId", 2);
-		return "/test";
-	}
 	
 	
 }
