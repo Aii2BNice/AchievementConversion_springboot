@@ -5,12 +5,54 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.dyq.contract.domain.ContractMapper">
 	
-	<select id="queryAllContract" resultType="contract">
-		
+	<resultMap type="contract" id="contractMap">
+		<id property="contractId" column="conreact_id"/>
+		<id property="contractName" column="contract_name"/>
+		<id property="userId" column="user_id"/>
+		<id property="customerId" column="customer_id"/>
+		<id property="fileId" column="file_id"/>
+		<id property="contractTime" column="contract_time"/>
+		<id property="contractUrl" column="contract_url"/>
+		<association property="user" select="queryUser" column="user_id"/>
+		<association property="customer" select="queryCustomer" column="customer_id"/>
+		<association property="file" select="queryFile" column="file_id"/>
+	</resultMap> 
+	<resultMap type="login" id="userMap">
+		<id property="loginId" column="login_id"/>
+		<id property="loginName" column="login_name"/>
+		<id property="powerId" column="power_id"/>
+	</resultMap>
+	<resultMap type="fileinfo" id="fileMap">
+		<id property="fileId" column="file_id"/>
+		<id property="fileName" column="file_name"/>
+		<id property="loginId" column="login_id"/>
+		<id property="applyTime" column="apply_time"/>
+		<id property="fileStateId" column="file_state_id"/>
+		<id property="fileTypeId" column="file_type_id"/>
+		<id property="filePrice" column="file_price"/>
+		<id property="fileIntroduce" column="file_introduce"/>
+		<id property="fileUploadTime" column="file_upload_time"/>
+		<id property="fileRealName" column="file_realname"/>
+	</resultMap>
+	<select id="queryUser" resultMap="userMap">
+		select * from login where login_id = #{userId}
+	</select>
+	<select id="queryCustomer" resultMap="userMap">
+		select * from login where login_id = #{customerId}
+	</select>
+	<select id="queryFile" resultMap="fileMap">
+		select * from fileinfo where file_id = #{fileId}
 	</select>
 	
-	<select id="queryContractById" resultType="contract">
-		
+	<!-- 查询所有合同 -->
+	<select id="queryAllContract" resultMap="contractMap">
+		select * from contract
+	</select>
+	
+	<!-- 根据ID查询合同 -->
+	<select id="queryContractById" resultMap="contractMap">
+		select * from contract 
+		where contract_id = #{contractId}
 	</select>
 	
 </mapper>
