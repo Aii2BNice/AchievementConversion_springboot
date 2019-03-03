@@ -3,7 +3,6 @@ package com.dyq.file.controller;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.UUID;
@@ -29,7 +28,7 @@ public class FileRestController {
 	private String path = "C:/fileupload";
 	
 	@RequestMapping("upload")
-	public String uploadFile(MultipartFile uploadfile,FileInfo fileinfo) throws IllegalStateException, IOException {
+	public String uploadFile(MultipartFile uploadfile,FileInfo fileinfo) throws Exception {
 		
 		String fileName = uploadfile.getOriginalFilename();
 		String msg = "";
@@ -68,7 +67,7 @@ public class FileRestController {
 			bis.close();
 			fis.close();
 		}
-		return "<h2>资源丢失</h2><br /><br /><a href='toexamfile'>点击返回</a>";
+		return "<h2>资源丢失</h2><br /><br /><a href='#' onclick='javascript:history.back(-1)'>点击返回</a>";
 	}
 	
 	@RequestMapping("queryAllState")

@@ -24,6 +24,9 @@
 		if($("#msg").text()!=""){
 			alert($("#msg").text());
 		}
+		$("#conversion").click(function(){
+			alert("消息已发送");
+		})
 		$.ajax({
 			type:'post',
 			url:'queryAllState',
@@ -138,8 +141,8 @@
 					<td>
 						<a th:href="@{download(fileId=${file.FileId})}">下载</a>&nbsp;&nbsp;
 						<a th:href="@{tofiledetail(fileId=${file.FileId})}">详情</a><br>
-						<a th:href="@{adopt(fileId=${file.FileId})}">通过</a>&nbsp;&nbsp;
-						<a th:href="@{reject(fileId=${file.FileId})}">驳回</a>
+						<a id="conversion">联系提交者</a>&nbsp;&nbsp;
+						<a th:href="@{conversion(fileId=${file.FileId})}">签订合同</a>
 					</td>
 				</tr>
 				<tr><td colspan="6" style="text-align: center;font-size: 15px;color: #4FC3F7;" th:if="${files==null}">暂无数据</td></tr>

@@ -24,10 +24,6 @@ public class FileController {
 		String url = "";
 		Login user = userService.queryLoginByName(loginName);
 		switch(user.getPowerId()) {
-		case 1:
-			url = "/user/filemanage";
-			file.setLoginId(user.getLoginId());
-			break;
 		case 2:url = "/customer/queryfile";break;
 		case 3:url = "/system/file/queryfile";break;
 		}
@@ -65,6 +61,21 @@ public class FileController {
 			msg = "文件驳回成功";
 		}else {
 			msg = "文件驳回失败";
+		}
+		req.setAttribute("msg", msg);
+		return "/system/file/queryfile"; 
+	}
+	
+	@RequestMapping("conversion")
+	public String conversion(HttpServletRequest req,Integer fileId){
+		int count = 0;
+		String msg = "";
+		try {count = fileService.updateFileState(fileId,4);}
+		catch(Exception e) {count = 0;};
+		if(count > 0) {
+			msg = "合同签订成功";
+		}else {
+			msg = "合同签订失败";
 		}
 		req.setAttribute("msg", msg);
 		return "/system/file/queryfile"; 
