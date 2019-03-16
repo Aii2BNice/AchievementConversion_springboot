@@ -23,4 +23,9 @@ public class ContractServiceImpl implements ContractService {
 		return dao.queryContractById(contractId);
 	}
 
+	@Override
+	public int insContract(Contract contract) {
+		return dao.insContract(contract);
+	}
+
 }

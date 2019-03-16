@@ -82,7 +82,7 @@
 			<hr>
 			<ul>
 				<li><a href="tousermessage">消息通知</a></li>
-				<li><a href="toselfupdate" style="color: #13E8E9" th:href="@{toselfupdate(loginName=${session.user.loginName})}">个人管理</a></li>
+				<li><a th:href="@{toselfupdate(loginName=${session.user.loginName})}" style="color: #13E8E9">个人管理</a></li>
 				<li><a href="tofileupload">专利上传</a></li>
 				<li><a href="tofilemanage">专利管理</a></li>
 				<li><a href="toexit">退出系统</a></li>

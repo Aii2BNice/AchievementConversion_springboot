@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.util.List;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -26,19 +25,19 @@ public class FileRestController {
 	private FileService fileService;
 	
 	private String path = "C:/fileupload";
-	
+	// 上传成果文件
 	@RequestMapping("upload")
 	public String uploadFile(MultipartFile uploadfile,FileInfo fileinfo) throws Exception {
-		
 		String fileName = uploadfile.getOriginalFilename();
 		String msg = "";
 		File dest = new File(path + "/" + fileName);
-		fileinfo.setFileRealName(UUID.randomUUID()+"");
 		if(!dest.getParentFile().exists()) {
 			dest.getParentFile().mkdir();
 		}
 		if(!dest.exists()) {
+			// 创建文件
 			uploadfile.transferTo(dest);
+			// 将文件信息存放到数据库
 			fileService.insertFile(fileinfo);
 			msg = "文件上传成功";
 		}else {
@@ -47,19 +46,23 @@ public class FileRestController {
 		return msg;
 	}
 	
+	// 下载成果文件
 	@RequestMapping("download")
 	public String downloadFile(Integer fileId,HttpServletResponse resp) throws Exception {
-		
+		// 查询是否有该文件
 		FileInfo file = fileService.queryFileById(fileId);
 		File dest = new File(path + "/" + file.getFileName());
+		// 本地磁盘里是否有该文件
 		if(dest.exists()) {
+			// 设置响应头
 			resp.setContentType("application/x-msdownload");
 			resp.setHeader("Content-Disposition", "attachment;filename="+new String(file.getFileName().getBytes("utf-8"),"ISO-8859-1"));
-			byte [] buffer = new byte[1024];
+			byte [] buffer = new byte[2048];
 			FileInputStream fis = new FileInputStream(dest);
 			OutputStream os = resp.getOutputStream();
 			BufferedInputStream bis = new BufferedInputStream(fis);
 			int i = bis.read(buffer);
+			// 将文件传输到浏览器
 			while(i!=-1) {
 				os.write(buffer);
 				i = bis.read(buffer);

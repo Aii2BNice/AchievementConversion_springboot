@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dyq.user.domain.Login;
+import com.dyq.user.domain.User;
 import com.dyq.user.service.UserService;
 
 @RestController
@@ -29,10 +30,12 @@ public class UserRestController {
 		return msg;
 	}
 	
+	// 修改用户信息
 	@RequestMapping("doupdateuser")
 	public String doupdateuser(@RequestBody Login login) {
 		String msg = "";
 		int count = 0;
+		// 修改用户信息
 		try { count = userService.updateLogin(login); }
 		catch(Exception e) { count = 0;}
 		finally {
@@ -40,6 +43,11 @@ public class UserRestController {
 			else { msg = "用户修改失败"; }
 		}
 		return msg;
+	}
+	
+	@RequestMapping("getUserMsg")
+	public User getUserMsg(Integer userId) {
+		return userService.queryUserById(userId);
 	}
 	
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.dyq.JumpController;
 import com.dyq.user.domain.Login;
 import com.dyq.user.service.UserService;
 
@@ -23,21 +24,23 @@ public class UserController {
 	 * @param login
 	 * @return
 	 */
+	// 登录
 	@RequestMapping("login")
 	public String login(HttpServletRequest req,Login login) {
-		
 		String url = "";
-		Login user = userService.login(login);
-		if(user!=null) {
-			switch(user.getPowerId()) {
-			case 1:url = "/user/userpage";break;
-			case 2:url = "/customer/customerpage";break;
-			case 3:url = "/system/adminpage";break;
+		if(!"".equals(login.getLoginName()) && !"".equals(login.getPass())) {
+			// 查询用户信息
+			Login user = userService.login(login);
+			if(user!=null) {
+				url = JumpController.getJumpUrl("login", user.getPowerId());
+				// 将用户信息存放到Session中
+				req.getSession().setAttribute("user", user);
+			}else {
+				url = "/login";
+				req.setAttribute("msg", "用户名或密码错误");
 			}
-			req.getSession().setAttribute("user", user);
 		}else {
-			url = "/login";
-			req.setAttribute("msg", "用户名或密码错误");
+			req.setAttribute("msg", "请输入用户名或密码");
 		}
 		return url;
 	}
@@ -48,31 +51,36 @@ public class UserController {
 	 * @param login
 	 * @return
 	 */
+	//  注册/添加用户
 	@RequestMapping("register")
 	public String register(HttpServletRequest req,Login login) {
 		String msg = "";
-		String url = "";
+		String url = "/login";
 		int count = 0;
+		//向数据库插入数据
 		try { count = userService.insertLogin(login); }
 		catch(Exception e) { count = 0;}
 		finally {
 			if(count>0) { 
-				System.out.println(login);
-				if(login.getPowerId()!=1) {
-					url = "/system/user/queryuser";
-					msg = "用户添加成功";
-				}else {
-					url = "/login";
+				if(login.getInsUser() != null) {
+					//管理员添加用户
+					if(login.getInsUser() == 3) {
+						url = "/system/user/queryuser";
+						msg = "用户添加成功";
+					//用户注册
+					}else {
+						msg = "用户注册成功";
+					}
 				}
-			}
-			else { 
+			}else { 
 				if(login.getPowerId()!=null) {
 					url = "/system/user/queryuser";
-					msg = "用户添加失败";
+					msg = "用户添加失败,请重试";
 				}else {
 					msg = "用户注册失败,请重试";
 					url = "/register";
 				}
+				//将信息返回前端
 				req.setAttribute("msg", msg);
 			}
 		}
@@ -99,15 +107,9 @@ public class UserController {
 	 */
 	@RequestMapping("toselfupdate")
 	public String toselfupdate(HttpServletRequest req,String loginName){
-		String url = "";
 		Login user = userService.queryLoginByName(loginName);
-		switch(user.getPowerId()) {
-		case 1:url = "/user/updateuser";break;
-		case 2:url = "/customer/updatecustomer";break;
-		case 3:url = "/system/admindetail";break;
-		}
 		req.setAttribute("user",user);
-		return url;
+		return JumpController.getJumpUrl("update", user.getPowerId());
 	}
 	
 	/**
@@ -169,13 +171,7 @@ public class UserController {
 	
 	@RequestMapping("toselfpage")
 	public String toSelfPage(Integer powerId) {
-		String url = "";
-		switch(powerId) {
-		case 1:url = "/user/userpage";break;
-		case 2:url = "/customer/customerpage";break;
-		case 3:url = "/system/adminpage";break;
-		}
-		return url;
+		return JumpController.getJumpUrl("selfPage", powerId);
 	}
 	
 }

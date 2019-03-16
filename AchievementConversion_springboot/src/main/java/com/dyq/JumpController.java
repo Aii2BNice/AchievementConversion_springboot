@@ -44,15 +44,67 @@ public class JumpController {
 	@RequestMapping("toaddpower")
 	public String toaddpower(){ return "/system/power/addpower";}
 	
-	//审核跳转
+	//文件上传跳转
 	@RequestMapping("tofileupload")
 	public String tofileupload(){ return "/user/fileupload";}
+	
+	//审核跳转
 	@RequestMapping("tofilemanage")
 	public String tofilemanage(){ return "/user/filemanage";}
 	
-	//日志跳转
-	@RequestMapping("toquerylogging")
-	public String toquerylogging(){ return "/system/logging/querylogging";}
-	
+	//根据不同权限跳转不同页面
+	public static String getJumpUrl(String kbn,Integer powerId) {
+		String url = "";
+		if("login".equals(kbn)) {
+			switch (powerId) {
+			case 1:url = "/user/userpage";break;
+			case 2:url = "/customer/customerpage";break;
+			case 3:url = "/system/adminpage";break;
+			}
+		}
+		if("update".equals(kbn)) {
+			switch (powerId) {
+			case 1:url = "/user/updateuser";break;
+			case 2:url = "/customer/updatecustomer";break;
+			case 3:url = "/system/admindetail";break;
+			}
+		}
+		if("selfPage".equals(kbn)) {
+			switch(powerId) {
+			case 1:url = "/user/userpage";break;
+			case 2:url = "/customer/customerpage";break;
+			case 3:url = "/system/adminpage";break;
+			}
+		}
+		if("queryFile".equals(kbn)) {
+			switch(powerId) {
+			case 1:url = "/user/queryfile";break;
+			case 2:url = "/customer/queryfile";break;
+			case 3:url = "/system/file/queryfile";break;
+			}
+		}
+		if("fileDetail".equals(kbn)) {
+			switch(powerId) {
+			case 1:url = "/user/queryfile";break;
+			case 2:url = "/customer/filedetail";break;
+			case 3:url = "/system/file/filedetail";break;
+			}
+		}
+		if("examFile".equals(kbn)) {
+			switch(powerId) {
+			case 1:url = "/user/queryfile";break;
+			case 2:url = "/customer/queryfile";break;
+			case 3:url = "/system/file/queryfile";break;
+			}
+		}
+		if("queryContract".equals(kbn)) {
+			switch(powerId) {
+			case 1:url = "/user/querycontract";break;
+			case 2:url = "/customer/querycontract";break;
+			case 3:url = "/system/querycontract";break;
+			}
+		}
+		return url;
+	}
 	
 }

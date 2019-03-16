@@ -61,7 +61,7 @@
 				<li><a href="tocustomermessage" style="color: #13E8E9">消息通知</a></li>
 				<li><a th:href="@{toselfupdate(loginName=${session.user.loginName})}">个人管理</a></li>
 				<li><a th:href="@{toexamfile(loginName=${session.user.loginName})}">成果列表</a></li>
-				<li><a href="queryAllContract">合同列表</a></li>
+				<li><a th:href="@{queryAllContract(loginName=${session.user.loginName})}">合同列表</a></li>
 				<li><a href="toexit">退出系统</a></li>
 			</ul>
 		</div>

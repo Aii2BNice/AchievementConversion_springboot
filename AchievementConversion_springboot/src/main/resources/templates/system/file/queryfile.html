@@ -70,8 +70,7 @@
           <li class="layui-nav-item"><a href="tostatistics">统计</a></li>
           <li class="layui-nav-item layui-this">
           	<a th:if="${session.user==null}" href="tologin" id="login">登录</a>
-          	<a th:if="${session.user!=null}" th:href="@{toselfpage(powerId=${session.user.powerId})}"
-			   th:text="${session.user.loginName}"></a>
+          	<a th:if="${session.user!=null}" th:href="@{toselfpage(powerId=${session.user.powerId})}" th:text="${session.user.loginName}"></a>
           </li>
           <li class="layui-nav-item"><a href="toabout">关于</a></li>
         </ul>
@@ -90,7 +89,6 @@
 				<li><a href="toqueryuser">用户管理</a></li>
 				<li><a href="toquerypower">权限管理</a></li>
 				<li><a th:href="@{toexamfile(loginName=${session.user.loginName})}" style="color: #13E8E9">专利审核</a></li>
-				<li><a href="toquerylogging">日志管理</a></li>
 				<li><a href="toexit">退出系统</a></li>
 			</ul>
 		</div>
@@ -139,7 +137,7 @@
 					<td th:text="${#dates.format(file.fileUploadTime,'yyyy-MM-dd')}"></td>
 					<td>
 						<a th:href="@{download(fileId=${file.FileId})}">下载</a>&nbsp;&nbsp;
-						<a th:href="@{tofiledetail(fileId=${file.FileId})}">详情</a><br>
+						<a th:href="@{tofiledetail(fileId=${file.FileId},loginName=${session.user.loginName})}">详情</a><br>
 						<a th:href="@{adopt(fileId=${file.FileId})}">通过</a>&nbsp;&nbsp;
 						<a th:href="@{reject(fileId=${file.FileId})}">驳回</a>
 					</td>

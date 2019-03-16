@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
-<title>科研成果转化平台-管理员首页</title>
+<title>科研成果转化平台</title>
 <link rel="stylesheet" href="res/layui/css/layui.css">
 <link rel="stylesheet" href="res/static/css/index.css">
 <link rel="stylesheet" href="res/static/css/userinfo.css" />
+<link rel="stylesheet" href="css/buttons.css"/>
 <style type="text/css">
 	ul li{font-size: 16px;line-height: 40px;}
 	ul li a:hover{color: #13E8E9;}
@@ -17,7 +18,33 @@
 <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 	$(function(){
+		$("#h2").css({"color":"white","position":"relative","left":"270px","top":"-10px"});
+		$("#add").click(function(){
+			var $val = $("[name='contractName']").val();
+			if($val != null && $val != "" && $val != undefined){
+				$.ajax({
+					type:'post',
+					url:'insContract',
+					data:JSON.stringify(getJsonData()),
+					contentType:'application/json;charset=utf-8',
+					success:function(data){
+						alert(data);
+					}
+				});
+			}else{
+				alert("请输入合同名称");
+			}
+		})
 		
+		function getJsonData(){
+			var json = {
+					"contractName" : $("[name='contractName']").val(),
+					"userId" : $("[name='userId']").val(),
+					"customerId" : $("[name='customerId']").val(),
+					"fileId" : $("[name='fileId']").val()
+				}
+			return json;
+		}
 	})
 </script>
 </head>
@@ -58,23 +85,42 @@
 			<hr>
 			<ul>
 				<li><a href="toadminmessage">消息通知</a></li>
-				<li><a href="tomodifylogin" th:href="@{tomodifylogin(loginName=${session.user.loginName})}">个人管理</a></li>
-				<li><a href="toqueryuser">用户管理</a></li>
-				<li><a href="toquerypower">权限管理</a></li>
-				<li><a href="toexamfile">专利审核</a></li>
-				<li><a href="toquerylogging" style="color: #13E8E9">日志管理</a></li>
+				<li><a th:href="@{toselfupdate(loginName=${session.user.loginName})}">个人管理</a></li>
+				<li><a th:href="@{toexamfile(loginName=${session.user.loginName})}" style="color: #13E8E9">成果列表</a></li>
+				<li><a th:href="@{queryAllContract(loginName=${session.user.loginName})}">合同列表</a></li>
 				<li><a href="toexit">退出系统</a></li>
 			</ul>
 		</div>
 		<div id="upload-right">
-			<table>
-				<tr><th colspan="5" style="text-align: center;">消息列表</th></tr>
-				<tr>
-					<td>成果名称</td>
-					<td>成果提交者</td>
-					<td>详情</td>
-				</tr>
-			</table>
+			<h2 id="h2">转化合同签订</h2>
+				<table id="tab">
+					<tr>
+						<td>合同名：</td>
+						<td>
+							<input type="text" name="contractName" required="required"/>
+							<input type="hidden" name="customerId" th:attr="value=${session.user.loginId}"/>
+						</td>
+					</tr>
+					<tr>
+						<td>文件名：</td>
+						<td>
+							<input type="text" th:attr="value=${file.fileName}" required="required"/>
+							<input type="hidden" name="fileId" th:attr="value=${file.fileId}"/>
+						</td>
+					</tr>
+					<tr>
+						<td>提交用户：</td>
+						<td>
+							<input type="text" th:attr="value=${file.login.loginName}" required="required"/>
+							<input type="hidden" name="userId" th:attr="value=${file.loginId}"/>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<input id="add" class="button button-pill button-primary" type="button" value="签订"/>
+						</td>
+					</tr>
+				</table>
 		</div>
 	</div>
 	<div class="footer">

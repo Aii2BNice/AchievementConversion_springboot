@@ -55,4 +55,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where contract_id = #{contractId}
 	</select>
 	
+	<insert id="insContract">
+		INSERT INTO contract(contract_name,user_id,customer_id,file_id,contract_time,contract_url) 
+		VALUES (#{contractName},#{userId},#{customerId},#{fileId},now(),#{contractUrl});
+	</insert>
+	
 </mapper>
