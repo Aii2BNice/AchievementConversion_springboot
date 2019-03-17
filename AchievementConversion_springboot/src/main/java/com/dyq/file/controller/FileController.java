@@ -28,6 +28,9 @@ public class FileController {
 		// 获取当前用户
 		Login user = userService.queryLoginByName(loginName);
 		// 获取所有文件列表
+		if(user.getPowerId() == 1) {
+			file.setLoginId(user.getLoginId());
+		}
 		List<FileInfo> files = fileService.queryAllFile(file);
 		// 存放到请求中
 		req.setAttribute("files", files);
@@ -73,21 +76,6 @@ public class FileController {
 			msg = "文件驳回成功";
 		}else {
 			msg = "文件驳回失败";
-		}
-		req.setAttribute("msg", msg);
-		return "/system/file/queryfile"; 
-	}
-	
-	@RequestMapping("conversion")
-	public String conversion(HttpServletRequest req,Integer fileId){
-		int count = 0;
-		String msg = "";
-		try {count = fileService.updateFileState(fileId,4);}
-		catch(Exception e) {count = 0;};
-		if(count > 0) {
-			msg = "合同签订成功";
-		}else {
-			msg = "合同签订失败";
 		}
 		req.setAttribute("msg", msg);
 		return "/system/file/queryfile"; 

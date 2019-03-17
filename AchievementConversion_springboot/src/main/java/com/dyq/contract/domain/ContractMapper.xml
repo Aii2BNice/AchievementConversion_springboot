@@ -47,6 +47,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 查询所有合同 -->
 	<select id="queryAllContract" resultMap="contractMap">
 		select * from contract
+		<where>
+			<if test="user.powerId == 1">
+				and user_id = #{user.loginId}
+			</if>
+			<if test="user.powerId == 2">
+				and user_id = #{user.loginId}
+			</if>
+		</where>
 	</select>
 	
 	<!-- 根据ID查询合同 -->

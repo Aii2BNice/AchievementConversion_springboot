@@ -28,6 +28,7 @@ public class ContractController {
 	@RequestMapping("queryAllContract")
 	public String queryAllContract(HttpServletRequest req,Contract contract,String loginName) {
 		Login user = userService.queryLoginByName(loginName);
+		contract.setUser(user);
 		req.setAttribute("contracts", contractService.queryAllContract(contract));
 		return JumpController.getJumpUrl("queryContract", user.getPowerId());
 	}

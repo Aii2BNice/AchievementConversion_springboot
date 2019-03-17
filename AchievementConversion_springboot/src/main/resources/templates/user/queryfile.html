@@ -89,6 +89,7 @@
 				<li><a th:href="@{toselfupdate(loginName=${session.user.loginName})}">个人管理</a></li>
 				<li><a href="tofileupload">专利上传</a></li>
 				<li><a th:href="@{toexamfile(loginName=${session.user.loginName})}" style="color: #13E8E9">专利管理</a></li>
+				<li><a th:href="@{queryAllContract(loginName=${session.user.loginName})}">合同管理</a></li>
 				<li><a href="toexit">退出系统</a></li>
 			</ul>
 		</div>
@@ -137,9 +138,7 @@
 					<td th:text="${#dates.format(file.fileUploadTime,'yyyy-MM-dd')}"></td>
 					<td>
 						<a th:href="@{download(fileId=${file.FileId})}">下载</a>&nbsp;&nbsp;
-						<a th:href="@{tofiledetail(fileId=${file.FileId})}">详情</a><br>
-						<a id="conversion">联系提交者</a>&nbsp;&nbsp;
-						<a th:href="@{conversion(fileId=${file.FileId})}">签订合同</a>
+						<a th:href="@{tofiledetail(fileId=${file.FileId},loginName=${session.user.loginName})}">详情</a><br>
 					</td>
 				</tr>
 				<tr><td colspan="6" style="text-align: center;font-size: 15px;color: #4FC3F7;" th:if="${files==null}">暂无数据</td></tr>

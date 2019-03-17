@@ -85,7 +85,7 @@ public class JumpController {
 		}
 		if("fileDetail".equals(kbn)) {
 			switch(powerId) {
-			case 1:url = "/user/queryfile";break;
+			case 1:url = "/user/filedetail";break;
 			case 2:url = "/customer/filedetail";break;
 			case 3:url = "/system/file/filedetail";break;
 			}
@@ -101,7 +101,7 @@ public class JumpController {
 			switch(powerId) {
 			case 1:url = "/user/querycontract";break;
 			case 2:url = "/customer/querycontract";break;
-			case 3:url = "/system/querycontract";break;
+			case 3:url = "/system/contract/querycontract";break;
 			}
 		}
 		return url;
