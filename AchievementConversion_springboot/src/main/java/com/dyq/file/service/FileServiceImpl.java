@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dyq.file.domain.FileGroupByType;
+import com.dyq.file.domain.FileGroupByYear;
 import com.dyq.file.domain.FileInfo;
 import com.dyq.file.domain.FileMapper;
 import com.dyq.file.domain.FileState;
@@ -43,6 +45,21 @@ public class FileServiceImpl implements FileService {
 	@Override
 	public int updateFileState(Integer fileId, Integer fileStateId) {
 		return dao.updateFileState(fileId, fileStateId);
+	}
+
+	@Override
+	public List<FileGroupByYear> getGroupByFileYear() {
+		return dao.getGroupByFileYear();
+	}
+
+	@Override
+	public List<FileGroupByType> getGroupByFileType() {
+		return dao.getGroupByFileType();
+	}
+
+	@Override
+	public List<FileGroupByYear> getSuccessGroupByFileYear() {
+		return dao.getSuccessGroupByFileYear();
 	}
 
 

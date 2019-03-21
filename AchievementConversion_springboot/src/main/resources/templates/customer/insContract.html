@@ -19,6 +19,11 @@
 <script type="text/javascript">
 	$(function(){
 		$("#h2").css({"color":"white","position":"relative","left":"270px","top":"-10px"});
+		$("[href='toexit']").click(function(){
+			if(!confirm("确定要退出系统吗?")){
+				return false;
+			}
+		})
 		$("#add").click(function(){
 			var $val = $("[name='contractName']").val();
 			if($val != null && $val != "" && $val != undefined){

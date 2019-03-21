@@ -4,15 +4,21 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dyq.file.domain.FileGroupByType;
+import com.dyq.file.domain.FileGroupByYear;
 import com.dyq.file.domain.FileInfo;
 import com.dyq.file.domain.FileState;
 import com.dyq.file.domain.FileType;
@@ -29,6 +35,7 @@ public class FileRestController {
 	@RequestMapping("upload")
 	public String uploadFile(MultipartFile uploadfile,FileInfo fileinfo) throws Exception {
 		String fileName = uploadfile.getOriginalFilename();
+		fileinfo.setFileName(fileName);
 		String msg = "";
 		File dest = new File(path + "/" + fileName);
 		if(!dest.getParentFile().exists()) {
@@ -43,7 +50,7 @@ public class FileRestController {
 		}else {
 			msg = "文件已存在";
 		}
-		return msg;
+		return msg + "<a href='toInsFinance?fileId="+ fileinfo.getFileId() +"'>缴费</a>";
 	}
 	
 	// 下载成果文件
@@ -54,15 +61,15 @@ public class FileRestController {
 		File dest = new File(path + "/" + file.getFileName());
 		// 本地磁盘里是否有该文件
 		if(dest.exists()) {
-			// 设置响应头
 			resp.setContentType("application/x-msdownload");
-			resp.setHeader("Content-Disposition", "attachment;filename="+new String(file.getFileName().getBytes("utf-8"),"ISO-8859-1"));
-			byte [] buffer = new byte[2048];
+			resp.setHeader("Content-Disposition", "attachment;filename="+new String(dest.getName().getBytes("utf-8"),"ISO-8859-1"));
+			//缓冲
+			byte [] buffer = new byte[1024];
+			//文件输入输出流
 			FileInputStream fis = new FileInputStream(dest);
 			OutputStream os = resp.getOutputStream();
 			BufferedInputStream bis = new BufferedInputStream(fis);
 			int i = bis.read(buffer);
-			// 将文件传输到浏览器
 			while(i!=-1) {
 				os.write(buffer);
 				i = bis.read(buffer);
@@ -81,6 +88,34 @@ public class FileRestController {
 	@RequestMapping("queryAllType")
 	public List<FileType> queryAllType(){
 		return fileService.queryAllType();
+	}
+	
+	// 以年份分组统计转化成功成果
+	@RequestMapping("groupByYear")
+	public List<List<FileGroupByYear>> getGroupByYear(){
+		List<List<FileGroupByYear>> resultList = new ArrayList<>();
+		// 获取上传分组结果
+		resultList.add(fileService.getGroupByFileYear());
+		// 获取转化成功分组结果
+		resultList.add(fileService.getSuccessGroupByFileYear());
+		return resultList;
+	}
+	
+	// 以分类分组统计转化成功成果
+	@RequestMapping("groupByType")
+	public Map<String, String> getGroupByType(){
+		Map<String, String> typeMap = new LinkedHashMap<>();
+		// 获取成功类型分组结果
+		List<FileGroupByType> list = fileService.getGroupByFileType();
+		for(FileGroupByType type : list) {
+			typeMap.put(type.getType(), type.getAmount());
+		}
+		return typeMap;
+	}
+	
+	@RequestMapping("getFileById")
+	public String getFileById(@RequestBody FileInfo file) {
+		return fileService.queryFileById(file.getFileId()).getFilePrice().toString();
 	}
 	
 }

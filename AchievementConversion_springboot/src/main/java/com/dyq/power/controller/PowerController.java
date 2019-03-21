@@ -15,6 +15,7 @@ public class PowerController {
 	@Autowired
 	private PowerService powerService;
 	
+	//查询权限
 	@RequestMapping("querypower")
 	public String queryPower(HttpServletRequest req,Power power) {
 		req.setAttribute("powers", powerService.queryAllPower(power));
@@ -22,12 +23,7 @@ public class PowerController {
 		return "/system/power/querypower";
 	}
 	
-	@RequestMapping("toupdatePower")
-	public String toupdatepower(HttpServletRequest req,String powerName){
-		req.setAttribute("power", powerService.queryPowerByName(powerName));
-		return "/system/power/updatepower";
-	}
-	
+	//删除权限
 	@RequestMapping("dodeletepower")
 	public String dodeletepower(HttpServletRequest req,Integer powerId){
 		int count = 0;
@@ -39,6 +35,11 @@ public class PowerController {
 			req.setAttribute("msg", "权限删除失败");
 		}
 		return "/system/power/querypower";
+	}
+	@RequestMapping("toupdatePower")
+	public String toupdatepower(HttpServletRequest req,String powerName){
+		req.setAttribute("power", powerService.queryPowerByName(powerName));
+		return "/system/power/updatepower";
 	}
 	
 }

@@ -55,33 +55,19 @@ public class UserController {
 	@RequestMapping("register")
 	public String register(HttpServletRequest req,Login login) {
 		String msg = "";
-		String url = "/login";
+		String url = "";
 		int count = 0;
 		//向数据库插入数据
 		try { count = userService.insertLogin(login); }
 		catch(Exception e) { count = 0;}
 		finally {
 			if(count>0) { 
-				if(login.getInsUser() != null) {
-					//管理员添加用户
-					if(login.getInsUser() == 3) {
-						url = "/system/user/queryuser";
-						msg = "用户添加成功";
-					//用户注册
-					}else {
-						msg = "用户注册成功";
-					}
-				}
+				msg = "注册成功";
+				url = "/login";
 			}else { 
-				if(login.getPowerId()!=null) {
-					url = "/system/user/queryuser";
-					msg = "用户添加失败,请重试";
-				}else {
-					msg = "用户注册失败,请重试";
-					url = "/register";
-				}
-				//将信息返回前端
-				req.setAttribute("msg", msg);
+				msg = "注册失败,请重试";
+				url = "/register";
+			req.setAttribute("msg", msg);
 			}
 		}
 		return url;
@@ -163,6 +149,7 @@ public class UserController {
 	 * @param loginName
 	 * @return
 	 */
+	// 退出登录
 	@RequestMapping("toexit")
 	public String toexit(HttpServletRequest req,String loginName){
 		req.getSession().removeAttribute("user");

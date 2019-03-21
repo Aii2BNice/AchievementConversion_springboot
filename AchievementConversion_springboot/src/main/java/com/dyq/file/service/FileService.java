@@ -2,6 +2,8 @@ package com.dyq.file.service;
 
 import java.util.List;
 
+import com.dyq.file.domain.FileGroupByType;
+import com.dyq.file.domain.FileGroupByYear;
 import com.dyq.file.domain.FileInfo;
 import com.dyq.file.domain.FileState;
 import com.dyq.file.domain.FileType;
@@ -14,5 +16,9 @@ public interface FileService {
 	FileInfo queryFileById(Integer fileId);
 	int insertFile(FileInfo file);
 	int updateFileState(Integer fileId,Integer fileStateId);
+	
+	List<FileGroupByYear> getGroupByFileYear();
+	List<FileGroupByYear> getSuccessGroupByFileYear();
+	List<FileGroupByType> getGroupByFileType();
 	
 }

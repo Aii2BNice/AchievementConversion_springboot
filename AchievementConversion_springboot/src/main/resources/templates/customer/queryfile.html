@@ -24,6 +24,11 @@
 		if($("#msg").text()!=""){
 			alert($("#msg").text());
 		}
+		$("[href='toexit']").click(function(){
+			if(!confirm("确定要退出系统吗?")){
+				return false;
+			}
+		})
 		$.ajax({
 			type:'post',
 			url:'queryAllType',

@@ -14,5 +14,9 @@ public interface FileMapper {
 	FileInfo queryFileById(@Param("fileId")Integer fileId);
 	int insertFile(FileInfo file);
 	int updateFileState(@Param("fileId") Integer fileId,@Param("fileStateId") Integer fileStateId);
-
+	
+	List<FileGroupByYear> getGroupByFileYear();
+	List<FileGroupByYear> getSuccessGroupByFileYear();
+	List<FileGroupByType> getGroupByFileType();
+	
 }

@@ -31,6 +31,7 @@ public class PowerRestController {
 		return msg;
 	}
 	
+	//增加权限
 	@RequestMapping("insertPower")
 	public String insertPower(@RequestBody Power power) {
 		String msg = "";
@@ -45,6 +46,7 @@ public class PowerRestController {
 		return msg;
 	}
 	
+	//修改权限
 	@RequestMapping("updatePower")
 	public String updatePower(@RequestBody Power power) {
 		System.out.println(power);

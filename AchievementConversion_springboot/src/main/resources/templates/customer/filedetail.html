@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
-<title>科研成果转化平台-管理员首页</title>
+<title>科研成果转化平台</title>
 <link rel="stylesheet" href="res/layui/css/layui.css">
 <link rel="stylesheet" href="res/static/css/index.css">
 <link rel="stylesheet" href="res/static/css/userinfo.css" />
@@ -24,6 +24,11 @@
 		})
 		$("#addContract").click(function(){
 			location.href = "toInsContract?loginName=" + $("#name").text() +"&fileId=" + $("#fileId").text();
+		})
+		$("[href='toexit']").click(function(){
+			if(!confirm("确定要退出系统吗?")){
+				return false;
+			}
 		})
 	})
 </script>

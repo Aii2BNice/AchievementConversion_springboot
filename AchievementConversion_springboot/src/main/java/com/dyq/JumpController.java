@@ -52,6 +52,14 @@ public class JumpController {
 	@RequestMapping("tofilemanage")
 	public String tofilemanage(){ return "/user/filemanage";}
 	
+	// 打印跳转
+	@RequestMapping("toPrint")
+	public String toPrint(){ return "/print";}
+	
+	// 缴费跳转
+	@RequestMapping("toInsFinance")
+	public String toInsFinance(){ return "/system/finance/addfinance";}
+	
 	//根据不同权限跳转不同页面
 	public static String getJumpUrl(String kbn,Integer powerId) {
 		String url = "";

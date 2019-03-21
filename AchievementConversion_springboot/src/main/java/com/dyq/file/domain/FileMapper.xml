@@ -66,6 +66,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="loginId!=null and loginId!=''">
 				and login_id = #{loginId}
 			</if>
+			<if test="login!= null">
+				<if test="login.powerId!='' and login.powerId == 2">
+					and file_state_id = 2 or file_state_id = 3
+				</if>
+			</if>
 		</where>
 		order by file_id
 	</select>
@@ -85,5 +90,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		set file_state_Id = #{fileStateId}
 		where file_id = #{fileId}
 	</update>
+	
+	<select id="getGroupByFileYear" resultType="FileGroupByYear">
+		select  date_format(file_upload_time,'%Y') as 'year' ,count(file_id) as 'amount'
+		from springdatabase.fileinfo
+		group by date_format(file_upload_time,'%Y')
+	</select>
+	
+	<select id="getSuccessGroupByFileYear" resultType="FileGroupByYear">
+		select  date_format(file_upload_time,'%Y') as 'year' ,count(file_id) as 'amount'
+		from springdatabase.fileinfo
+		where file_state_id = 4
+		group by date_format(file_upload_time,'%Y');
+	</select>
+	
+	<select id="getGroupByFileType" resultType="FileGroupByType">
+		select file_type_id as 'type',count(file_id) as 'amount'
+		from springdatabase.fileinfo
+		group by file_type_id
+	</select>
 	
 </mapper>

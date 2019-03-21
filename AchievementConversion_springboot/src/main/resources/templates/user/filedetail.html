@@ -22,6 +22,11 @@
 		$("#return").click(function(){
 			location.href = "toexamfile?loginName=" + $("#name").text();
 		})
+		$("[href='toexit']").click(function(){
+			if(!confirm("确定要退出系统吗?")){
+				return false;
+			}
+		})
 	})
 </script>
 </head>

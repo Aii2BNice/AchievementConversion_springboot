@@ -31,6 +31,9 @@ public class FileController {
 		if(user.getPowerId() == 1) {
 			file.setLoginId(user.getLoginId());
 		}
+		if(user.getPowerId() == 2) {
+			file.setLogin(new Login(null, null, null, 2, null, null)); 
+		}
 		List<FileInfo> files = fileService.queryAllFile(file);
 		// 存放到请求中
 		req.setAttribute("files", files);
