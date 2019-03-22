@@ -130,7 +130,7 @@
 						<a th:href="@{tofiledetail(fileId=${file.FileId},loginName=${session.user.loginName})}">详情</a><br>
 					</td>
 				</tr>
-				<tr><td colspan="6" style="text-align: center;font-size: 15px;color: #4FC3F7;" th:if="${files==null}">暂无数据</td></tr>
+				<tr><td colspan="6" style="text-align: center;font-size: 15px;color: #4FC3F7;" th:if="${files == null or files.size() == 0 }">暂无数据</td></tr>
 			</table>
 			<span id="msg" style="display: none;" th:text="${msg}"></span>
 		</div>

@@ -145,7 +145,7 @@
 						<a class="delete" href="dodelete" th:href="@{dodelete(loginId=${login.loginId})}" th:attr="title=${login.loginName}">删除</a>
 					</td>
 				</tr>
-				<tr><td colspan="5" style="text-align: center;font-size: 15px;color: #4FC3F7;" th:if="${login==null}">暂无数据</td></tr>
+				<tr><td colspan="5" style="text-align: center;font-size: 15px;color: #4FC3F7;" th:if="${logins == null or logins.size() == 0 }">暂无数据</td></tr>
 			</table>
 			<span id="msg" style="display: none;" th:text="${msg}"></span>
 		</div>

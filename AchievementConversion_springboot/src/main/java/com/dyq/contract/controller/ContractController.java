@@ -31,7 +31,7 @@ public class ContractController {
 		contract.setUser(user);
 		req.setAttribute("contracts", contractService.queryAllContract(contract));
 		return JumpController.getJumpUrl("queryContract", user.getPowerId());
-	}
+	} 
 	
 	//合同签订跳转
 	@RequestMapping("toInsContract")

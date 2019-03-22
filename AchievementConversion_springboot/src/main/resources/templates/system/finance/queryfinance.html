@@ -96,7 +96,7 @@
 				<td th:text="${#dates.format(finance.registerTime,'yyyy-MM-dd')}"></td>
 				<td><a th:href="@{queryFinanceById(financeId=${finance.financeId})}">打印收据</a></td>
 			</tr>
-			<tr><td colspan="5" style="text-align: center;font-size: 15px;color: #4FC3F7;" th:if="${finances==null}">暂无数据</td></tr>
+			<tr><td colspan="6" style="text-align: center;font-size: 15px;color: #4FC3F7;" th:if="${finances == null or finances.size() == 0 }">暂无数据</td></tr>
 		</table>
 		<span id="msg" style="display: none;" th:text="${msg}"></span>
 		</div>

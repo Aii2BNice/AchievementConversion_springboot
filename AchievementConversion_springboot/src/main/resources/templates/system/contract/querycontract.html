@@ -92,7 +92,7 @@
 					<td th:text="${contract.file.fileName}"></td>
 					<td th:text="${#dates.format(contract.contractTime,'yyyy-MM-dd')}"></td>
 				</tr>
-				<tr><td colspan="6" style="text-align: center;font-size: 15px;color: #4FC3F7;" th:if="${contracts}==null">暂无数据</td></tr>
+				<tr><td colspan="6" style="text-align: center;font-size: 15px;color: #4FC3F7;" th:if="${contracts == null or contracts.size() == 0 }">暂无数据</td></tr>
 			</table>
 			<span id="msg" style="display: none;" th:text="${msg}"></span>
 		</div>

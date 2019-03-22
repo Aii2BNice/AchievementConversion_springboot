@@ -52,7 +52,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				and user_id = #{user.loginId}
 			</if>
 			<if test="user.powerId == 2">
-				and user_id = #{user.loginId}
+				and customer_id = #{user.loginId}
 			</if>
 		</where>
 	</select>

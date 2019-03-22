@@ -66,7 +66,7 @@
 				<li><a href="tocustomermessage">消息通知</a></li>
 				<li><a th:href="@{toselfupdate(loginName=${session.user.loginName})}">个人管理</a></li>
 				<li><a th:href="@{toexamfile(loginName=${session.user.loginName})}">成果列表</a></li>
-				<li><a th:href="@{queryAllContract(loginName=${session.user.loginName})}">合同列表</a></li>
+				<li><a th:href="@{queryAllContract(loginName=${session.user.loginName})}" style="color: #13E8E9">合同列表</a></li>
 				<li><a href="toexit">退出系统</a></li>
 			</ul>
 		</div>
@@ -89,7 +89,7 @@
 					<td th:text="${contract.file.fileName}"></td>
 					<td th:text="${#dates.format(contract.contractTime,'yyyy-MM-dd')}"></td>
 				</tr>
-				<tr><td colspan="6" style="text-align: center;font-size: 15px;color: #4FC3F7;" th:if="${contracts}==null">暂无数据</td></tr>
+				<tr><td colspan="6" style="text-align: center;font-size: 15px;color: #4FC3F7;" th:if="${contracts == null or contracts.size() == 0 }">暂无数据</td></tr>
 			</table>
 			<span id="msg" style="display: none;" th:text="${msg}"></span>
 		</div>

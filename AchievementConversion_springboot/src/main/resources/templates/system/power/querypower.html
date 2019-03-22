@@ -119,7 +119,7 @@
 					<a class="delete" th:href="@{dodeletepower(powerId=${power.powerId})}" th:attr="title=${power.powerName}">删除</a>
 				</td>
 			</tr>
-			<tr><td colspan="5" style="text-align: center;font-size: 15px;color: #4FC3F7;" th:if="${power==null}">暂无数据</td></tr>
+			<tr><td colspan="5" style="text-align: center;font-size: 15px;color: #4FC3F7;" th:if="${powers == null or powers.size() == 0 }">暂无数据</td></tr>
 		</table>
 		<span id="msg" style="display: none;" th:text="${msg}"></span>
 		</div>

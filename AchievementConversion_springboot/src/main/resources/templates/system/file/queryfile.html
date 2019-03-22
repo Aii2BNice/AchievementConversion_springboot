@@ -145,14 +145,12 @@
 					<td>
 						<a th:href="@{download(fileId=${file.FileId})}">下载</a>&nbsp;&nbsp;
 						<a th:href="@{tofiledetail(fileId=${file.FileId},loginName=${session.user.loginName})}">详情</a><br>
-						<a  th:if="${file.fileStateId != 2}" th:href="@{adopt(fileId=${file.FileId})}">通过</a>
-						<a  th:if="${file.fileStateId == 2}" href="javascript:;">通过</a>
+						<a th:if="${file.fileStateId == 1}" th:href="@{adopt(fileId=${file.FileId})}">通过</a>
 						&nbsp;&nbsp;
-						<a th:if="${file.fileStateId != 3}" th:href="@{reject(fileId=${file.FileId})}">驳回</a>
-						<a  th:if="${file.fileStateId == 3}" href="javascript:;">通过</a>
+						<a th:if="${file.fileStateId == 1}" th:href="@{reject(fileId=${file.FileId})}">驳回</a>
 					</td>
 				</tr>
-				<tr><td colspan="6" style="text-align: center;font-size: 15px;color: #4FC3F7;" th:if="${files==null}">暂无数据</td></tr>
+				<tr><td colspan="6" style="text-align: center;font-size: 15px;color: #4FC3F7;" th:if="${files == null or files.size() == 0 }">暂无数据</td></tr>
 			</table>
 			<span id="msg" style="display: none;" th:text="${msg}"></span>
 		</div>
