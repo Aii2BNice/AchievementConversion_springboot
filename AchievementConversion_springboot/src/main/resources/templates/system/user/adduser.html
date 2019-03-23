@@ -44,6 +44,9 @@
 			var json = { "loginName":$("[name='loginName']").val() }
 			return json;
 		}
+		if($("#msg").text()!=""){
+			alert($("#msg").text());
+		}
 	})
 </script>
 </head>
@@ -128,6 +131,7 @@
 					</tr>
 				</table>
 			</form>
+			<span id="msg" style="display: none;" th:text="${msg}"></span>
 		</div>
 	</div>
 	<div class="footer">

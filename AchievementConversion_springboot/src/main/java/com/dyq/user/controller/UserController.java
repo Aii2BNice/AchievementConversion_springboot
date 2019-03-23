@@ -53,7 +53,7 @@ public class UserController {
 	 */
 	//  注册/添加用户
 	@RequestMapping("register")
-	public String register(HttpServletRequest req,Login login) {
+	public String register(HttpServletRequest req,Login login,Integer insUser) {
 		String msg = "";
 		String url = "";
 		int count = 0;
@@ -62,13 +62,23 @@ public class UserController {
 		catch(Exception e) { count = 0;}
 		finally {
 			if(count>0) { 
-				msg = "注册成功";
-				url = "/login";
+				if(insUser == 3) {
+					msg = "用户添加成功";
+					url = "/system/user/queryuser";
+				}else {
+					msg = "注册成功";
+					url = "/login";
+				}
 			}else { 
-				msg = "注册失败,请重试";
-				url = "/register";
-			req.setAttribute("msg", msg);
+				if(insUser == 3) {
+					msg = "用户添加失败";
+					url = "/system/user/adduser";
+				}else {
+					msg = "注册失败,请重试";
+					url = "/register";
+				}
 			}
+			req.setAttribute("msg", msg);
 		}
 		return url;
 	}

@@ -49,8 +49,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 插入数据 -->
 	<insert id="insFinance">
-		insert into finance 
-		values()
+		insert into finance(price,login_id,file_id,register_time)
+		values(#{price},#{userId},#{fileId},now())
 	</insert>
 	
 </mapper>

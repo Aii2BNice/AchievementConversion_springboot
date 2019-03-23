@@ -1,5 +1,7 @@
 package com.dyq.finance.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,10 @@ public class FinanceController {
 	@RequestMapping("queryAllFinance")
 	public String queryAllFinanca(HttpServletRequest req,Finance finance) {
 		req.setAttribute("finances", financeService.queryAllFince(finance));
+		List<Finance> queryAllFince = financeService.queryAllFince(finance);
+		for(Finance f:queryAllFince) {
+			System.out.println(f);
+		}
 		return "/system/finance/queryfinance";
 	}
 	
@@ -29,7 +35,6 @@ public class FinanceController {
 	@ResponseBody
 	public String insFinance(@RequestBody Finance finance) {
 		String msg = "";
-		System.out.println(finance);
 		if(finance != null) {
 			financeService.insFinance(finance);
 			msg = "缴费成功";
