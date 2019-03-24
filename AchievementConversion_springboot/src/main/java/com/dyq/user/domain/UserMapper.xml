@@ -66,4 +66,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where login_id = #{loginId}
 	</delete>
 	
+	<select id="queryAdminById"></select>
+	
+	<select id="queryCustomerById"></select>
+	
+	<insert id="insertAdmin"></insert>
+	
+	<insert id="insCustomer"></insert>
+	
+	<update id="updatAdmin"></update>
+	
+	<update id="updateCustomer"></update>
+	
+	<delete id="deleteAdmin"></delete>
+	
+	<delete id="deleteCustomrt"></delete>
+	
 </mapper>
