@@ -14,4 +14,6 @@ public interface FinanceMapper {
 	
 	int insFinance (Finance finance);
 	
+	List<FinanceGroupByYear> queryFinanceByYear();
+	
 }

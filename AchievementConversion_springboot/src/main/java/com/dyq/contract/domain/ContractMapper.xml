@@ -6,13 +6,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.dyq.contract.domain.ContractMapper">
 	
 	<resultMap type="contract" id="contractMap">
-		<id property="contractId" column="conreact_id"/>
-		<id property="contractName" column="contract_name"/>
-		<id property="userId" column="user_id"/>
-		<id property="customerId" column="customer_id"/>
-		<id property="fileId" column="file_id"/>
-		<id property="contractTime" column="contract_time"/>
-		<id property="contractUrl" column="contract_url"/>
+		<id property="contractId" column="contract_id"/>
+		<result property="contractName" column="contract_name"/>
+		<result property="userId" column="user_id"/>
+		<result property="customerId" column="customer_id"/>
+		<result property="fileId" column="file_id"/>
+		<result property="contractPrice" column="contract_price"/>
+		<result property="contractTime" column="contract_time"/>
+		<result property="contractUrl" column="contract_url"/>
 		<association property="user" select="queryUser" column="user_id"/>
 		<association property="customer" select="queryCustomer" column="customer_id"/>
 		<association property="file" select="queryFile" column="file_id"/>
@@ -64,8 +65,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<insert id="insContract">
-		INSERT INTO contract(contract_name,user_id,customer_id,file_id,contract_time,contract_url) 
-		VALUES (#{contractName},#{userId},#{customerId},#{fileId},now(),#{contractUrl});
+		INSERT INTO contract(contract_name,user_id,customer_id,file_id,contract_price,contract_time,contract_url) 
+		VALUES (#{contractName},#{userId},#{customerId},#{fileId},#{contractPrice},now(),#{contractUrl});
 	</insert>
+	
+	<delete id="deleteContract">
+		delete from contract where where contract_id = #{contractId}
+	</delete>
 	
 </mapper>

@@ -84,18 +84,6 @@ public class UserController {
 	}
 	
 	/**
-	 * 转到修改页面
-	 * @param req
-	 * @param loginName
-	 * @return
-	 */
-	@RequestMapping("tomodifylogin")
-	public String tomodifylogin(HttpServletRequest req,String loginName){
-		req.setAttribute("user",userService.queryLoginByName(loginName));
-		return "/modifylogin";
-	}
-	
-	/**
 	 * 转到修个人登录信息改页面
 	 * @param req
 	 * @param loginName
@@ -137,6 +125,7 @@ public class UserController {
 	 * @param login
 	 * @return
 	 */
+	// 删除用户
 	@RequestMapping("dodelete")
 	public String dodelete(HttpServletRequest req,Integer loginId) {
 		int count = 0;

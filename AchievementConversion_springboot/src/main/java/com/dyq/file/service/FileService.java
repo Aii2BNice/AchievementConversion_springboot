@@ -16,6 +16,10 @@ public interface FileService {
 	FileInfo queryFileById(Integer fileId);
 	int insertFile(FileInfo file);
 	int updateFileState(Integer fileId,Integer fileStateId);
+	int updateFileInfo(FileInfo file);
+	int queryFileCount(FileInfo file);
+	
+	int deleteFile(Integer fileId);
 	
 	List<FileGroupByYear> getGroupByFileYear();
 	List<FileGroupByYear> getSuccessGroupByFileYear();

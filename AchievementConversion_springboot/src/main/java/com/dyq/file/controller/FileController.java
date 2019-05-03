@@ -1,5 +1,6 @@
 package com.dyq.file.controller;
 
+import java.io.File;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -75,6 +76,8 @@ public class FileController {
 		// 修改文件状态为审核未通过
 		try {count = fileService.updateFileState(fileId,3);}
 		catch(Exception e) {count = 0;};
+		// 删除磁盘文件
+		new File("C:/fileupload" + fileService.queryFileById(fileId).getFileName()).delete();
 		if(count > 0) {
 			msg = "文件驳回成功";
 		}else {
@@ -82,6 +85,45 @@ public class FileController {
 		}
 		req.setAttribute("msg", msg);
 		return "/system/file/queryfile"; 
+	}
+	
+	@RequestMapping("toupdatefile")
+	public String toupdatefile(HttpServletRequest req,Integer fileId) { 
+		FileInfo fileInfo = fileService.queryFileById(fileId);
+		req.setAttribute("file",fileInfo);
+		return "/user/fileupdate"; 
+	}
+	
+	@RequestMapping("updateFile")
+	public String updateFile(HttpServletRequest req,FileInfo file) {
+		String msg = "";
+		int count = 0;
+		try {count = fileService.updateFileInfo(file);}
+		catch(Exception e) {}
+		if(count > 0) {
+			msg = "成果信息修改成功";
+		}else {
+			msg = "成功信息修改失败";
+		}
+		FileInfo fileInfo = fileService.queryFileById(file.getFileId());
+		req.setAttribute("file",fileInfo);
+		req.setAttribute("msg", msg);
+		return "/user/filedetail";
+	}
+	
+	@RequestMapping("dodeletefile")
+	public String dodeletefile(HttpServletRequest req,Integer fileId) {
+		String msg = "";
+		int count = 0;
+		try {count = fileService.deleteFile(fileId);}
+		catch(Exception e) {}
+		if(count > 0) {
+			msg = "成果删除成功";
+		}else {
+			msg = "成果删除失败";
+		}
+		req.setAttribute("msg", msg);
+		return "/user/queryfile";
 	}
 	
 	@RequestMapping("toexamfile")

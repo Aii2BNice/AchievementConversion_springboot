@@ -18,9 +18,16 @@
 <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 	$(function(){
-		$("#h2").css({"color":"white","position":"relative","left":"270px","top":"-10px"});
+		$("#h2").css({"color":"black","position":"relative","left":"270px","top":"-10px"});
 		$("#return").click(function(){
 			location.href = "toexamfile?loginName=" + $("#name").text();
+		})
+		$("#update").click(function(){
+			if($("#fileState").text() != "未审核"){
+				alert("成果已经" + $("#fileState").text() + ",无法修改!");
+			}else{
+				location.href = "toupdatefile?fileId=" + $("#fileId").text();
+			}
 		})
 		$("[href='toexit']").click(function(){
 			if(!confirm("确定要退出系统吗?")){
@@ -95,7 +102,7 @@
 				</tr>
 				<tr>
 					<td>文件状态：</td>
-					<td th:text="${file.fileState.fileStateName}"></td>
+					<td id="fileState" th:text="${file.fileState.fileStateName}"></td>
 				</tr>
 				<tr>
 					<td>文件类型：</td>
@@ -115,6 +122,7 @@
 				</tr>
 				<tr>
 					<td colspan="2">
+						<input id="update" class="button button-pill button-primary" type="button" value="修改"/>
 						<input id="return" class="button button-pill button-primary" type="button" value="返回"/>
 					</td>
 				</tr>

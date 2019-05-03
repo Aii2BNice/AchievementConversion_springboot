@@ -18,7 +18,7 @@
 <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 	$(function(){
-		$("#h2").css({"color":"white","position":"relative","left":"270px","top":"-10px"});
+		$("#h2").css({"color":"black","position":"relative","left":"270px","top":"-10px"});
 		$("[href='toexit']").click(function(){
 			if(!confirm("确定要退出系统吗?")){
 				return false;
@@ -46,7 +46,8 @@
 					"contractName" : $("[name='contractName']").val(),
 					"userId" : $("[name='userId']").val(),
 					"customerId" : $("[name='customerId']").val(),
-					"fileId" : $("[name='fileId']").val()
+					"fileId" : $("[name='fileId']").val(),
+					"contractPrice" : $("[name='filePrice']").val()
 				}
 			return json;
 		}
@@ -97,27 +98,33 @@
 			</ul>
 		</div>
 		<div id="upload-right">
-			<h2 id="h2">转化合同签订</h2>
+			<h2 id="h2">转化合同信息录入</h2>
 				<table id="tab">
 					<tr>
 						<td>合同名：</td>
 						<td>
-							<input type="text" name="contractName" required="required"/>
+							<input type="text" name="contractName"/>
 							<input type="hidden" name="customerId" th:attr="value=${session.user.loginId}"/>
 						</td>
 					</tr>
 					<tr>
 						<td>文件名：</td>
 						<td>
-							<input type="text" th:attr="value=${file.fileName}" required="required"/>
+							<input type="text" th:attr="value=${file.fileName}"/>
 							<input type="hidden" name="fileId" th:attr="value=${file.fileId}"/>
 						</td>
 					</tr>
 					<tr>
 						<td>提交用户：</td>
 						<td>
-							<input type="text" th:attr="value=${file.login.loginName}" required="required"/>
+							<input type="text" th:attr="value=${file.login.loginName}"/>
 							<input type="hidden" name="userId" th:attr="value=${file.loginId}"/>
+						</td>
+					</tr>
+					<tr>
+						<td>成交价格(万元)：</td>
+						<td>
+							<input type="text" name="filePrice" th:attr="value=${file.filePrice}"/>
 						</td>
 					</tr>
 					<tr>

@@ -29,6 +29,8 @@ public class FileInfo {
 	private Date fileUploadTime;
 	private String fileRealName;
 	
+	private Integer pageNum;
+	
 	private Login login;
 	private FileState fileState;
 	private FileType fileType;
@@ -160,6 +162,12 @@ public class FileInfo {
 	}
 	public void setFileType(FileType fileType) {
 		this.fileType = fileType;
+	}
+	public Integer getPageNum() {
+		return pageNum;
+	}
+	public void setPageNum(Integer pageNum) {
+		this.pageNum = pageNum;
 	}
 	@Override
 	public String toString() {

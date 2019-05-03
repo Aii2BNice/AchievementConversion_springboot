@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
@@ -14,39 +14,48 @@
 	#upload-right{width: 650px;height: 300px;position: fixed;top: 100px;left:40%;padding-top: 15px;}
 	#upload-left ul{font-size: 20px;color: 	#63B8FF;}
 	.exam{color: red;}	
-	#h2{color:black;position:relative;left:270px;top:-10px;}
 </style>
-<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 	$(function(){
-		$("#msg1").css("color","red");
+		$("#h2").css({"color":"black","position":"relative","left":"270px","top":"-10px"});
+		$("#return").click(function(){
+			location.href = "toexamfile?loginName=" + $("#name").text();
+		})
 		$("[href='toexit']").click(function(){
 			if(!confirm("确定要退出系统吗?")){
 				return false;
 			}
 		})
-		$("[name='loginName']").blur(function(){
-			$.ajax({
-				type:'post',
-				url:'verLoginName',
-				data:JSON.stringify(getJsonData()),
-				contentType:'application/json;charset=utf-8',
-				success:function(msg){
-					$("#msg1").empty();
-					$("#msg1").html(msg);
-				}
-			});
-		});
-		$("#return").click(function(){
-			location.href = "toqueryuser";
+		$("#btn").click(function(){
+			if($("[name='fileTypeId']").val() == ""){
+				alert("请选择专利类别!");
+				return false;
+			}
 		})
-		function getJsonData(){
-			var json = { "loginName":$("[name='loginName']").val() }
-			return json;
-		}
-		if($("#msg").text()!=""){
-			alert($("#msg").text());
-		}
+		$("#delete").click(function(){
+			if(!confirm("确定要删除吗?")){
+				return false;
+			}else{
+				if($("#fileState").text() != "未审核"){
+					alert("成果已经通过审核,无法删除");
+					return false;
+				}else{
+					location.href = "dodeletefile?fileId="+$("[name='fileId']").val();
+				}
+			}
+		})
+		$.ajax({
+			type:'post',
+			url:'queryAllType',
+			data:{},
+			contentType:'application/json;charset=utf-8',
+			success:function(data){
+				for(var index in data){
+					$("[name='fileTypeId']").append("<option value="+data[index].fileTypeId+">"+data[index].fileTypeName+"</option>");
+				}
+			}
+		});
 	})
 </script>
 </head>
@@ -83,53 +92,74 @@
   
   <div id="particles-js">
 		<div id="upload-left">
-			<h3 th:text="'欢迎   '+${session.user.loginName} + ' 登录  '"></h3>
+			<h3><span>欢迎  <span id="name" th:text="${session.user.loginName}"></span> 登录</span></h3>
 			<hr>
 			<ul>
-				<li><a href="toadminmessage">消息通知</a></li>
+				<li><a href="tousermessage">消息通知</a></li>
 				<li><a th:href="@{toselfupdate(loginName=${session.user.loginName})}">个人管理</a></li>
-				<li><a href="queryAllLogin" style="color: #13E8E9">用户管理</a></li>
-				<li><a href="toquerypower">权限管理</a></li>
-				<li><a href="queryAllFinance">收费查询</a></li>
-				<li><a th:href="@{toexamfile(loginName=${session.user.loginName})}">专利审核</a></li>
+				<li><a href="tofileupload">专利上传</a></li>
+				<li><a th:href="@{toexamfile(loginName=${session.user.loginName})}" style="color: #13E8E9">专利管理</a></li>
 				<li><a th:href="@{queryAllContract(loginName=${session.user.loginName})}">合同管理</a></li>
 				<li><a href="toexit">退出系统</a></li>
 			</ul>
 		</div>
 		<div id="upload-right">
-			<h2 id="h2">添加用户</h2>
-			<form action="register" method="post">
+			<h2 id="h2">提交成果修改</h2>
+			<form action="updateFile">
 				<table id="tab">
-					<tr>
-						<td width="50%">用户登录名</td>
-						<td>
-							<input type="text" name="loginName"/><span id="msg1"></span>
-							<input type="hidden" name="insUser" th:value="${session.user.power.powerId}"/>
-						</td>
-					</tr>
-					<tr>
-						<td>用户密码</td>
-						<td>
-							<input type="text" name="pass"/>
-						</td>
-					</tr>
-					<tr>
-						<td>用户权限</td>
-						<td>
-							<select name="powerId">
-								<option value="1">科研人员</option>
-								<option value="2">企业客户</option>
-								<option value="3">管理员</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<input class="button button-pill button-primary" type="submit" value="添加"/>&nbsp;&nbsp;
-							<input id="return" class="button button-pill button-primary" type="button" value="返回"/>
-						</td>
-					</tr>
-				</table>
+				<tr>
+					<td>文件编号：</td>
+					<td>
+						<input type="text" name="fileId" readonly="readonly" th:value="${file.fileId}"/> 
+					</td>
+				</tr>
+				<tr>
+					<td>文件名称：</td>
+					<td>
+						<input type="text" name="fileName" required="required" th:value="${file.fileName}"/> 
+					</td>
+				</tr>
+				<tr>
+					<td>提交者：</td>
+					<td th:text="${file.login.loginName}"></td>
+				</tr>
+				<tr>
+					<td>专利申请时间：</td>
+					<td>
+						<input type="date" name="applyTime" required="required" th:value="${#dates.format(file.applyTime,'yyyy-MM-dd')}"/> 
+					</td>
+				</tr>
+				<tr>
+					<td>文件状态：</td>
+					<td id="fileState" th:text="${file.fileState.fileStateName}"></td>
+				</tr>
+				<tr>
+					<td>文件类型：</td>
+					<td><select name="fileTypeId" th:value="${file.fileTypeId}"></select></td>
+				</tr>
+				<tr>
+					<td>专利报价：</td>
+					<td>
+						<input type="text" name="filePrice" required="required" th:value="${file.filePrice}"/> 
+					</td>
+				</tr>
+				<tr>
+					<td>专利描述：</td>
+					<td>
+						<textarea cols="40" rows="5" name="fileIntroduce" th:text="${file.fileIntroduce}"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td>文件提交时间：</td>
+					<td th:text="${#dates.format(file.fileUploadTime,'yyyy-MM-dd')}"></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input id="btn" class="button button-pill button-primary" type="submit" value="修改"/>&nbsp;&nbsp;
+						<input id="delete" class="button button-pill button-primary" type="button" value="删除"/>
+					</td>
+				</tr>
+			</table>
 			</form>
 			<span id="msg" style="display: none;" th:text="${msg}"></span>
 		</div>

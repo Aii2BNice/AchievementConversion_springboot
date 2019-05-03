@@ -36,6 +36,11 @@
 				alert("请选择专利类别!");
 				return false;
 			}
+			var $fileName = $("#upfile").val();
+			if($fileName.split(".")[1] != "pdf"){
+				alert("请检查文件格式或文件命名!");
+				return false;
+			}
 		})
 		$.ajax({
 			type:'post',
@@ -96,7 +101,7 @@
 			</ul>
 		</div>
 		<div id="upload-right">
-			<h2>成果文件上传</h2><br />
+			<h2>成果文件信息添加</h2><br />
 			<form action="upload" enctype="multipart/form-data" method="post">
 				<table>
 					<tr>

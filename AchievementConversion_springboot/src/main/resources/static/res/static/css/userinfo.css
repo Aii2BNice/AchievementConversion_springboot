@@ -8,8 +8,8 @@ canvas{
   vertical-align:bottom;
 }
 
-body{background-color: rgb(117,135,155);}
-table tr td{width: 650px;height: 30px;border: 1px dashed black;text-align: center;line-height: 40px;color: midnightblue;font-size: 13px;}
+body{background-color: rgb(255,255,255);}
+table tr td{width: 650px;height: 30px;border: 1px solid black;text-align: center;line-height: 40px;color: midnightblue;font-size: 13px;}
 #upload-left{width: 170px;height: 100%;position: fixed;top: 100px;left:10%;border-right: 1px solid black;}
 
 .count-particles{

@@ -1,6 +1,9 @@
 package com.dyq.finance.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dyq.finance.domain.Finance;
+import com.dyq.finance.domain.FinanceGroupByYear;
 import com.dyq.finance.service.FinanceService;
 
 @Controller
@@ -23,10 +27,6 @@ public class FinanceController {
 	@RequestMapping("queryAllFinance")
 	public String queryAllFinanca(HttpServletRequest req,Finance finance) {
 		req.setAttribute("finances", financeService.queryAllFince(finance));
-		List<Finance> queryAllFince = financeService.queryAllFince(finance);
-		for(Finance f:queryAllFince) {
-			System.out.println(f);
-		}
 		return "/system/finance/queryfinance";
 	}
 	
@@ -49,6 +49,19 @@ public class FinanceController {
 	public String queryFinanceById(HttpServletRequest req,Integer financeId) {
 		req.setAttribute("finance", financeService.queryFinanceById(financeId));
 		return "print";
+	}
+	
+	//分组统计每年缴费
+	@RequestMapping("queryFinanceGroup")
+	@ResponseBody
+	public Map<String, String> queryFinanceGroup(){
+		Map<String, String> financeMap = new LinkedHashMap<>();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		List<FinanceGroupByYear> queryFinanceByYear = financeService.queryFinanceByYear();
+		for(FinanceGroupByYear fgby :queryFinanceByYear) {
+			financeMap.put(sdf.format(fgby.getRegisterTime()), fgby.getAmount().toString());
+		}
+		return financeMap;
 	}
 	
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dyq.finance.domain.Finance;
+import com.dyq.finance.domain.FinanceGroupByYear;
 import com.dyq.finance.domain.FinanceMapper;
 
 @Service
@@ -24,6 +25,10 @@ public class FinanceService {
 	
 	public int insFinance (Finance finance) {
 		return financeMapper.insFinance(finance);
+	}
+	
+	public List<FinanceGroupByYear> queryFinanceByYear(){
+		return financeMapper.queryFinanceByYear();
 	}
 	
 }

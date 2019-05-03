@@ -14,13 +14,15 @@
 	#upload-right{width: 650px;height: 300px;position: fixed;top: 100px;left:40%;padding-top: 15px;}
 	#upload-left ul{font-size: 20px;color: 	#63B8FF;}
 	.exam{color: red;}	
+	#fenye{width: 100%;height: 25px;}
+	#fenye a{font-size: 14px;}
 </style>
 <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 	$(function(){
 		$("select").append("<option value=''>--请选择--</option>");
 		$("select").css("width","145px");
-		$("#h2").css({"color":"white","position":"relative","left":"270px","top":"-10px"});
+		$("#h2").css({"color":"black","position":"relative","left":"270px","top":"-10px"});
 		$("[href='toexit']").click(function(){
 			if(!confirm("确定要退出系统吗?")){
 				return false;
@@ -91,7 +93,7 @@
 			<ul>
 				<li><a href="toadminmessage">消息通知</a></li>
 				<li><a th:href="@{toselfupdate(loginName=${session.user.loginName})}">个人管理</a></li>
-				<li><a href="toqueryuser">用户管理</a></li>
+				<li><a href="queryAllLogin">用户管理</a></li>
 				<li><a href="toquerypower">权限管理</a></li>
 				<li><a href="queryAllFinance">收费查询</a></li>
 				<li><a th:href="@{toexamfile(loginName=${session.user.loginName})}" style="color: #13E8E9">专利审核</a></li>

@@ -9,19 +9,22 @@
 <link rel="stylesheet" href="res/static/css/userinfo.css" />
 <link rel="stylesheet" href="css/buttons.css"/>
 <style type="text/css">
-	
 	ul li{font-size: 16px;line-height: 40px;}
 	ul li a:hover{color: #13E8E9;}
 	#upload-right{width: 650px;height: 300px;position: fixed;top: 100px;left:40%;padding-top: 15px;}
 	#upload-left ul{font-size: 20px;color: 	#63B8FF;}
 	.exam{color: red;}	
+	#financestatic{width: 200px;height: 50px;margin: 0 auto;}
 </style>
 <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 	$(function(){
-		$("#h2").css({"color":"white","position":"relative","left":"270px","top":"-10px"});
+		$("#h2").css({"color":"black","position":"relative","left":"270px","top":"-10px"});
 		$("#print").click(function(){
 			location.href = "toPrint";
+		})
+		$("#tofinanceStatic").click(function(){
+			location.href = "tofinanceStatic"
 		})
 		$("[href='toexit']").click(function(){
 			if(!confirm("确定要退出系统吗?")){
@@ -69,7 +72,7 @@
 			<ul>
 				<li><a href="toadminmessage">消息通知</a></li>
 				<li><a th:href="@{toselfupdate(loginName=${session.user.loginName})}">个人管理</a></li>
-				<li><a href="toqueryuser">用户管理</a></li>
+				<li><a href="queryAllLogin">用户管理</a></li>
 				<li><a href="toquerypower">权限管理</a></li>
 				<li><a href="queryAllFinance" style="color: #13E8E9">收费查询</a></li>
 				<li><a th:href="@{toexamfile(loginName=${session.user.loginName})}">专利审核</a></li>
@@ -99,6 +102,10 @@
 			<tr><td colspan="6" style="text-align: center;font-size: 15px;color: #4FC3F7;" th:if="${finances == null or finances.size() == 0 }">暂无数据</td></tr>
 		</table>
 		<span id="msg" style="display: none;" th:text="${msg}"></span>
+		<br />
+		<div id="financestatic">
+			<input id="tofinanceStatic" class="button button-pill button-primary" type="button" value="查看收费统计"/>
+		</div>
 		</div>
 	</div>
 	<div class="footer">

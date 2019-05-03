@@ -33,6 +33,14 @@ public class ContractController {
 		return JumpController.getJumpUrl("queryContract", user.getPowerId());
 	} 
 	
+	//删除合同信息
+	@RequestMapping("deleteContract")
+	public String deleteContract(HttpServletRequest req,Integer contractId) {
+		contractService.deleteContract(contractId);
+		req.setAttribute("msg", "合同删除成功");
+		return "/system/contract/querycontract";
+	}
+	
 	//合同签订跳转
 	@RequestMapping("toInsContract")
 	public String toInsContract(HttpServletRequest req,String loginName,Integer fileId) {

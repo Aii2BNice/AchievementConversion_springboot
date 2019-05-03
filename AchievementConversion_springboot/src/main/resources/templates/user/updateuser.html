@@ -18,7 +18,7 @@
 <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 	$(function(){
-		$("#h2").css({"color":"white","position":"relative","left":"270px","top":"-10px"});
+		$("#h2").css({"color":"black","position":"relative","left":"270px","top":"-10px"});
 		$("[href='toexit']").click(function(){
 			if(!confirm("确定要退出系统吗?")){
 				return false;
@@ -96,26 +96,26 @@
 		</div>
 		<div id="upload-right">
 			<h2 id="h2">用户信息修改</h2>
-				<table id="tab">
-					<tr>
-						<td>用户登录名</td>
-						<td>
-							<input type="text" name="loginName" th:attr="value=${user.loginName}"/>
-							<input type="hidden" name="loginId" th:attr="value=${user.loginId}"/>
-						</td>
-					</tr>
-					<tr>
-						<td>用户密码</td>
-						<td>
-							<input type="text" name="pass" th:attr="value=${user.pass}"/>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<input id="alter" class="button button-pill button-primary" type="button" value="修改"/>
-						</td>
-					</tr>
-				</table>
+			<table id="tab">
+				<tr>
+					<td>用户登录名</td>
+					<td>
+						<input type="text" name="loginName" th:attr="value=${user.loginName}"/>
+						<input type="hidden" name="loginId" th:attr="value=${user.loginId}"/>
+					</td>
+				</tr>
+				<tr>
+					<td>用户密码</td>
+					<td>
+						<input type="text" name="pass" th:attr="value=${user.pass}"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input id="alter" class="button button-pill button-primary" type="button" value="修改"/>
+					</td>
+				</tr>
+			</table><br />
 		</div>
 	</div>
 	<div class="footer">

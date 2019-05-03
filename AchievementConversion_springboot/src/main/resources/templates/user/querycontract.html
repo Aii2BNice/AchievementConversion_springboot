@@ -80,6 +80,7 @@
 					<td>科研人员</td>
 					<td>企业客户</td>
 					<td>成果名称</td>
+					<td>交易价格</td>
 					<td>签订日期</td>
 				</tr>
 				<tr th:each="contract : ${contracts}">
@@ -88,6 +89,7 @@
 					<td th:text="${contract.user.loginName}"></td>
 					<td th:text="${contract.customer.loginName}"></td>
 					<td th:text="${contract.file.fileName}"></td>
+					<td th:text="${contract.contractPrice} + '(万元)'"></td>
 					<td th:text="${#dates.format(contract.contractTime,'yyyy-MM-dd')}"></td>
 				</tr>
 				<tr><td colspan="6" style="text-align: center;font-size: 15px;color: #4FC3F7;" th:if="${contracts == null or contracts.size() == 0 }">暂无数据</td></tr>

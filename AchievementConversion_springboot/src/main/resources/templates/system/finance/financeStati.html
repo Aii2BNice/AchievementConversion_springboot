@@ -14,39 +14,28 @@
 	#upload-right{width: 650px;height: 300px;position: fixed;top: 100px;left:40%;padding-top: 15px;}
 	#upload-left ul{font-size: 20px;color: 	#63B8FF;}
 	.exam{color: red;}	
-	#h2{color:black;position:relative;left:270px;top:-10px;}
 </style>
-<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../js/echarts.min.js"></script>
+<script type="text/javascript" src="../js/echarts-gl.min.js"></script>
+<script type="text/javascript" src="../js/ecStat.min.js"></script>
+<script type="text/javascript" src="../js/dataTool.min.js"></script>
+<script type="text/javascript" src="../js/china.js"></script>
+<script type="text/javascript" src="../js/world.js"></script>
+<script type="text/javascript" src="../js/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+<script type="text/javascript" src="../js/bmap.min.js"></script>
+<script type="text/javascript" src="../js/simplex.js"></script>
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 	$(function(){
-		$("#msg1").css("color","red");
+		$("#h2").css({"color":"black","position":"relative","left":"270px","top":"-10px"});
+		$("#print").click(function(){
+			location.href = "toPrint";
+		})
 		$("[href='toexit']").click(function(){
 			if(!confirm("确定要退出系统吗?")){
 				return false;
 			}
 		})
-		$("[name='loginName']").blur(function(){
-			$.ajax({
-				type:'post',
-				url:'verLoginName',
-				data:JSON.stringify(getJsonData()),
-				contentType:'application/json;charset=utf-8',
-				success:function(msg){
-					$("#msg1").empty();
-					$("#msg1").html(msg);
-				}
-			});
-		});
-		$("#return").click(function(){
-			location.href = "toqueryuser";
-		})
-		function getJsonData(){
-			var json = { "loginName":$("[name='loginName']").val() }
-			return json;
-		}
-		if($("#msg").text()!=""){
-			alert($("#msg").text());
-		}
 	})
 </script>
 </head>
@@ -88,50 +77,17 @@
 			<ul>
 				<li><a href="toadminmessage">消息通知</a></li>
 				<li><a th:href="@{toselfupdate(loginName=${session.user.loginName})}">个人管理</a></li>
-				<li><a href="queryAllLogin" style="color: #13E8E9">用户管理</a></li>
+				<li><a href="queryAllLogin">用户管理</a></li>
 				<li><a href="toquerypower">权限管理</a></li>
-				<li><a href="queryAllFinance">收费查询</a></li>
+				<li><a href="queryAllFinance" style="color: #13E8E9">收费查询</a></li>
 				<li><a th:href="@{toexamfile(loginName=${session.user.loginName})}">专利审核</a></li>
 				<li><a th:href="@{queryAllContract(loginName=${session.user.loginName})}">合同管理</a></li>
 				<li><a href="toexit">退出系统</a></li>
 			</ul>
 		</div>
 		<div id="upload-right">
-			<h2 id="h2">添加用户</h2>
-			<form action="register" method="post">
-				<table id="tab">
-					<tr>
-						<td width="50%">用户登录名</td>
-						<td>
-							<input type="text" name="loginName"/><span id="msg1"></span>
-							<input type="hidden" name="insUser" th:value="${session.user.power.powerId}"/>
-						</td>
-					</tr>
-					<tr>
-						<td>用户密码</td>
-						<td>
-							<input type="text" name="pass"/>
-						</td>
-					</tr>
-					<tr>
-						<td>用户权限</td>
-						<td>
-							<select name="powerId">
-								<option value="1">科研人员</option>
-								<option value="2">企业客户</option>
-								<option value="3">管理员</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<input class="button button-pill button-primary" type="submit" value="添加"/>&nbsp;&nbsp;
-							<input id="return" class="button button-pill button-primary" type="button" value="返回"/>
-						</td>
-					</tr>
-				</table>
-			</form>
-			<span id="msg" style="display: none;" th:text="${msg}"></span>
+			<h2 id="h2">收费统计(2012-2018)</h2>
+			<div id="container" style="height: 100%"></div>
 		</div>
 	</div>
 	<div class="footer">
@@ -162,6 +118,53 @@
       </div>
     </div>
   </div>
+<script type="text/javascript">
+	var dom = document.getElementById("container");
+	var myChart = echarts.init(dom);
+	var app = {};
+	option = null;
+	option = {
+	    color: ['#3398DB'],
+	    tooltip : {
+	        trigger: 'axis',
+	        axisPointer : {            
+	            type : 'shadow'
+	        }
+	    },
+	    grid: {
+	        left: '3%',
+	        right: '4%',
+	        bottom: '3%',
+	        containLabel: true
+	    },
+	    xAxis : [
+	        {
+	            type : 'category',
+	            data : ['2012年', '2013年', '2014年', '2015年', '2016年', '2017年', '2018年'],
+	            axisTick: {
+	                alignWithLabel: true
+	            }
+	        }
+	    ],
+	    yAxis : [
+	        {
+	            type : 'value'
+	        }
+	    ],
+	    series : [
+	        {
+	            name:'收入金额(万)',
+	            type:'bar',
+	            barWidth: '60%',
+	            data:[10, 15, 20, 30, 45, 60, 70]
+	        }
+	    ]
+	};
+	;
+	if (option && typeof option === "object") {
+	    myChart.setOption(option, true);
+	}
+</script>
 <script src="res/layui/layui.js"></script>
 <script>
   layui.config({

@@ -9,6 +9,8 @@ public class Login {
 	private String pass;
 	private Integer powerId;
 	
+	private Integer pageNum = 0;
+	
 	private Power power;
 	private Login login;
 	
@@ -61,6 +63,13 @@ public class Login {
 	}
 	public void setLogin(Login login) {
 		this.login = login;
+	}
+	
+	public Integer getPageNum() {
+		return pageNum;
+	}
+	public void setPageNum(Integer pageNum) {
+		this.pageNum = pageNum;
 	}
 	@Override
 	public String toString() {

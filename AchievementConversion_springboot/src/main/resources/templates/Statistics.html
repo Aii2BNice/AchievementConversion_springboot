@@ -61,8 +61,10 @@
   <!-- main部分 -->
   
   <h2 style="position: absolute;left: 600px;">2011-2018年专利提交与转化柱状图</h2><br /><br />
-	<div id="container2" style="height: 600px;width: 100%;"></div>
+  <div id="container2" style="height: 600px;width: 100%;"></div>
   <div id="container1" style="height: 600px;width: 100%;"></div>
+  <h2 style="position: absolute;left: 600px;">2012-2018年注册用户统计图</h2><br /><br />
+  <div id="container3" style="height: 600px;width: 100%;"></div>
   
   <!-- footer部分 -->
   <div class="footer">
@@ -104,168 +106,191 @@
   }).use('firm'); 
 </script>
 <script type="text/javascript">
-			var dom = document.getElementById("container1");
-			var myChart = echarts.init(dom);
-			var app = {};
-			option = null;
-			option = {
-				backgroundColor: '#46485f',
+	var dom = document.getElementById("container1");
+	var myChart = echarts.init(dom);
+	var app = {};
+	option = null;
+	option = {
+		backgroundColor: '#FFFFFF',
 
-				title: {
-					text: '提交专利分类图(2011-2018)',
-					left: 'center',
-					top: 90,
-					textStyle: {
-						color: '#ccc'
-					}
-				},
-
-				tooltip: {
-					trigger: 'item',
-					formatter: "{a} <br/>{b} : {c} ({d}%)"
-				},
-
-				visualMap: {
-					show: false,
-					min: 80,
-					max: 600,
-					inRange: {
-						colorLightness: [0, 1]
-					}
-				},
-				series: [{
-					name: '成果提交',
-					type: 'pie',
-					radius: '55%',
-					center: ['50%', '50%'],
-					data: [{
-							value: 335,
-							name: '应用基础研究'
-						},
-						{
-							value: 310,
-							name: '科技攻关项目'
-						},
-						{
-							value: 274,
-							name: '软科学研究项目'
-						},
-						{
-							value: 235,
-							name: '其他类'
-						},
-						{
-							value: 400,
-							name: '技术开发项目'
-						}
-					].sort(function(a, b) {
-						return a.value - b.value;
-					}),
-					roseType: 'radius',
-					label: {
-						normal: {
-							textStyle: {
-								color: 'rgba(255, 255, 255, 0.3)'
-							}
-						}
-					},
-					labelLine: {
-						normal: {
-							lineStyle: {
-								color: 'rgba(255, 255, 255, 0.3)'
-							},
-							smooth: 0.1,
-							length: 10,
-							length2: 20
-						}
-					},
-					itemStyle: {
-						normal: {
-							color: '#4169e1',
-							shadowBlur: 200,
-							shadowColor: 'rgba(0, 0, 0, 0.5)'
-						}
-					},
-
-					animationType: 'scale',
-					animationEasing: 'elasticOut',
-					animationDelay: function(idx) {
-						return Math.random() * 200;
-					}
-				}]
-			};;
-			if(option && typeof option === "object") {
-				myChart.setOption(option, true);
+		title: {
+			text: '提交专利分类图(2011-2018)',
+			left: 'center',
+			top: 90,
+			textStyle: {
+				color: '#000000'
 			}
-		</script>
-		
-		<script type="text/javascript">
-			var dom = document.getElementById("container2");
-			var myChart = echarts.init(dom);
-			var app = {};
-			option = null;
-			var xAxisData = [];
-			var data1 = [];
-			var data2 = [];
-			for(var i = 90; i < 98; i++) {
-				xAxisData.push('20' + (i-79) + '年');
-				data1.push((Math.sin(i / 5) * (i / 5 - 6) + i / 6) * 5);
-				data2.push((Math.cos(i / 5) * (i / 5 - 6) + i / 6) * 5);
-			}
+		},
 
-			option = {
-				title: {
-					text: ''
+		tooltip: {
+			trigger: 'item',
+			formatter: "{a} <br/>{b} : {c} ({d}%)"
+		},
+
+		visualMap: {
+			show: false,
+			min: 80,
+			max: 600,
+			inRange: {
+				colorLightness: [0, 1]
+			}
+		},
+		series: [{
+			name: '成果提交',
+			type: 'pie',
+			radius: '55%',
+			center: ['50%', '50%'],
+			data: [{
+					value: 335,
+					name: '应用基础研究'
 				},
-				legend: {
-					data: ['成果转化数量', '成果提交数量'],
-					align: 'left'
+				{
+					value: 310,
+					name: '科技攻关项目'
 				},
-				toolbox: {
-					// y: 'bottom',
-					feature: {
-						magicType: {
-							type: ['stack', 'tiled']
-						},
-						dataView: {},
-						saveAsImage: {
-							pixelRatio: 2
-						}
-					}
+				{
+					value: 274,
+					name: '软科学研究项目'
 				},
-				tooltip: {},
-				xAxis: {
-					data: xAxisData,
-					silent: false,
-					splitLine: {
-						show: false
-					}
+				{
+					value: 235,
+					name: '其他类'
 				},
-				yAxis: {},
-				series: [{
-					name: '成果转化数量',
-					type: 'bar',
-					data: data1,
-					animationDelay: function(idx) {
-						return idx * 10;
-					}
-				}, {
-					name: '成果提交数量',
-					type: 'bar',
-					data: data2,
-					animationDelay: function(idx) {
-						return idx * 10 + 100;
-					}
-				}],
-				animationEasing: 'elasticOut',
-				animationDelayUpdate: function(idx) {
-					return idx * 5;
+				{
+					value: 400,
+					name: '技术开发项目'
 				}
-			};;
-			if(option && typeof option === "object") {
-				myChart.setOption(option, true);
+			].sort(function(a, b) {
+				return a.value - b.value;
+			}),
+			roseType: 'radius',
+			label: {
+				normal: {
+					textStyle: {
+						color: 'rgba(0, 0, 0, 0.7)'
+					}
+				}
+			},
+			labelLine: {
+				normal: {
+					lineStyle: {
+						color: 'rgba(0, 0, 0, 0.7)'
+					},
+					smooth: 0.1,
+					length: 10,
+					length2: 20
+				}
+			},
+			itemStyle: {
+				normal: {
+					color: '#4169e1',
+					shadowBlur: 200,
+					shadowColor: 'rgba(0, 0, 0, 1)'
+				}
+			},
+
+			animationType: 'scale',
+			animationEasing: 'elasticOut',
+			animationDelay: function(idx) {
+				return Math.random() * 200;
 			}
-		</script>
+		}]
+	};;
+	if(option && typeof option === "object") {
+		myChart.setOption(option, true);
+	}
+</script>	
+<script type="text/javascript">
+	var dom = document.getElementById("container2");
+	var myChart = echarts.init(dom);
+	var app = {};
+	option = null;
+	var xAxisData = [];
+	var data1 = [];
+	var data2 = [];
+	for(var i = 90; i < 98; i++) {
+		xAxisData.push('20' + (i-79) + '年');
+		data1.push((Math.sin(i / 5) * (i / 5 - 6) + i / 6) * 5);
+		data2.push((Math.cos(i / 5) * (i / 5 - 6) + i / 6) * 5);
+	}
+
+	option = {
+		title: {
+			text: ''
+		},
+		legend: {
+			data: ['成果转化数量', '成果提交数量'],
+			align: 'left'
+		},
+		toolbox: {
+			// y: 'bottom',
+			feature: {
+				magicType: {
+					type: ['stack', 'tiled']
+				},
+				dataView: {},
+				saveAsImage: {
+					pixelRatio: 2
+				}
+			}
+		},
+		tooltip: {},
+		xAxis: {
+			data: xAxisData,
+			silent: false,
+			splitLine: {
+				show: false
+			}
+		},
+		yAxis: {},
+		series: [{
+			name: '成果转化数量',
+			type: 'bar',
+			data: data1,
+			animationDelay: function(idx) {
+				return idx * 10;
+			}
+		}, {
+			name: '成果提交数量',
+			type: 'bar',
+			data: data2,
+			animationDelay: function(idx) {
+				return idx * 10 + 100;
+			}
+		}],
+		animationEasing: 'elasticOut',
+		animationDelayUpdate: function(idx) {
+			return idx * 5;
+		}
+	};;
+	if(option && typeof option === "object") {
+		myChart.setOption(option, true);
+	}
+</script>
+<script type="text/javascript">
+	var dom = document.getElementById("container3");
+	var myChart = echarts.init(dom);
+	var app = {};
+	option = null;
+	option = {
+	    xAxis: {
+	        type: 'category',
+	        data: ['2012', '2013', '2014', '2015', '2016', '2017', '2018']
+	    },
+	    yAxis: {
+	        type: 'value'
+	    },
+	    series: [{
+	        data: [820, 932, 901, 934, 1290, 1330, 1320],
+	        type: 'line'
+	    }]
+	};
+	;
+	if (option && typeof option === "object") {
+	    myChart.setOption(option, true);
+	}
+</script>		
+		
 		
 </body>
 </html>

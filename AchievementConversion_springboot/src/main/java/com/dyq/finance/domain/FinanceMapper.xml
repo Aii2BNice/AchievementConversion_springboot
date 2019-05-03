@@ -38,6 +38,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from fileinfo where file_id = #{fileId}
 	</select>
 	
+	<resultMap type="financeGroupByYear" id="financeGroupByYearMap">
+		<id property="registerTime" column="register_time"/>
+		<result property="amount" column="amount"/>
+	</resultMap>
+	
 	<!-- 查询所有 -->
 	<select id="queryAllFince" resultMap="FinanceMap">
 		select * from finance
@@ -52,5 +57,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into finance(price,login_id,file_id,register_time)
 		values(#{price},#{userId},#{fileId},now())
 	</insert>
+	
+	<select id="queryFinanceByYear" resultMap="financeGroupByYearMap">
+		select register_time,count(finance_id) as amount
+		from springdatabase.finance
+		group by register_time
+	</select>
 	
 </mapper>

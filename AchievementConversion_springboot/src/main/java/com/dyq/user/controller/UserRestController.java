@@ -1,11 +1,17 @@
 package com.dyq.user.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dyq.user.domain.Login;
+import com.dyq.user.domain.LoginGroupByTime;
 import com.dyq.user.domain.User;
 import com.dyq.user.service.UserService;
 
@@ -43,6 +49,18 @@ public class UserRestController {
 			else { msg = "用户修改失败"; }
 		}
 		return msg;
+	}
+	
+	//平台注册用户统计
+	@RequestMapping("queryLoginGroupByTime")
+	public Map<String, String> queryLoginGroupByTime(){
+		Map<String, String> timeMap = new LinkedHashMap<>();
+		List<LoginGroupByTime> queryUserGroupByTime = userService.queryUserGroupByTime();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		for(LoginGroupByTime lgbt : queryUserGroupByTime ) {
+			timeMap.put(sdf.format(lgbt.getLoginTime()).toString(), lgbt.getAmount().toString());
+		}
+		return timeMap;
 	}
 	
 	@RequestMapping("getUserMsg")

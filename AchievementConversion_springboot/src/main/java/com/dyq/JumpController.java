@@ -60,6 +60,10 @@ public class JumpController {
 	@RequestMapping("toInsFinance")
 	public String toInsFinance(){ return "/system/finance/addfinance";}
 	
+	//收费统计跳转
+	@RequestMapping("tofinanceStatic")
+	public String tofinanceStatic() {return "/system/finance/financeStati";}
+	
 	//根据不同权限跳转不同页面
 	public static String getJumpUrl(String kbn,Integer powerId) {
 		String url = "";
@@ -111,6 +115,17 @@ public class JumpController {
 			case 2:url = "/customer/querycontract";break;
 			case 3:url = "/system/contract/querycontract";break;
 			}
+		}
+		return url;
+	}
+	
+	public static String getFileUploadUrl(String msg,Integer fileId) {
+		String url = "";
+		if("文件上传成功".equals(msg)) {
+			url = "<h2>"+ msg + "</h2><a href='toInsFinance?fileId="+ fileId +"'>缴费</a>";
+		}
+		if("文件已存在".equals(msg)) {
+			url = "<h2>"+ msg + "</h2><a href='javascript:history.back(-1);'>返回</a>";
 		}
 		return url;
 	}

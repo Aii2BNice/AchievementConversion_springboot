@@ -50,9 +50,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from file_type
 	</select>
 	
-	<!-- 查询所有 -->
-	<select id="queryAllFile" resultMap="fileMap">
-		select * from fileinfo
+	<sql id="fileWhere">
 		<where>
 			<if test="fileStateId!=null and fileStateId!=''">
 				and file_state_id = #{fileStateId}
@@ -68,11 +66,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 			<if test="login!= null">
 				<if test="login.powerId!='' and login.powerId == 2">
-					and file_state_id = 2 or file_state_id = 3
+					and file_state_id = 2
 				</if>
 			</if>
 		</where>
+	</sql>
+	
+	<!-- 查询所有 -->
+	<select id="queryAllFile" resultMap="fileMap">
+		select * from fileinfo
+		<include refid="fileWhere" />
 		order by file_id
+		<!-- limit #{pageNum},4 -->
+	</select>
+	
+	<select id="fileCount" resultType="java.lang.Integer">
+		select count(1) 
+		from fileinfo
+		<include refid="fileWhere" />
 	</select>
 	
 	<select id="queryFileById" resultMap="fileMap">
@@ -85,11 +96,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				#{fileIntroduce},now(),#{fileRealName},#{filePrice})
 	</insert>
 	
+	<update id="updateFileInfo">
+		update fileinfo
+		set file_name = #{fileName},
+			apply_time = #{applyTime},
+			file_type_id = #{fileTypeId},
+			file_introduce = #{fileIntroduce},
+			file_price = #{filePrice}
+		where file_id = #{fileId}
+	</update>
+	
 	<update id="updateFileState">
 		update fileinfo
 		set file_state_Id = #{fileStateId}
 		where file_id = #{fileId}
 	</update>
+	
+	<delete id="deleteFile">
+		delete from fileinfo where file_id = #{fileId}
+	</delete>
 	
 	<select id="getGroupByFileYear" resultType="FileGroupByYear">
 		select  date_format(file_upload_time,'%Y') as 'year' ,count(file_id) as 'amount'

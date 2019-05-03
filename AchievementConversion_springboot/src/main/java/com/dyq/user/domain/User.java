@@ -7,15 +7,12 @@ public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private Integer UserId;
-	private Integer LoginId;
+	private Integer LoginName;
 	private String realName;
 	private Integer Sex;
 	private Long postCode;
 	private String Email;
 	private Long Tel;
-	private Integer sId;
-	
-	private Login login;
 	
 	public Integer getUserId() {
 		return UserId;
@@ -23,11 +20,11 @@ public class User implements Serializable{
 	public void setUserId(Integer userId) {
 		UserId = userId;
 	}
-	public Integer getLoginId() {
-		return LoginId;
+	public Integer getLoginName() {
+		return LoginName;
 	}
-	public void setLoginId(Integer loginId) {
-		LoginId = loginId;
+	public void setLoginName(Integer loginName) {
+		LoginName = loginName;
 	}
 	public String getRealName() {
 		return realName;
@@ -59,20 +56,8 @@ public class User implements Serializable{
 	public void setTel(Long tel) {
 		Tel = tel;
 	}
-	public Integer getsId() {
-		return sId;
-	}
-	public void setsId(Integer sId) {
-		this.sId = sId;
-	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
-	}
-	public Login getLogin() {
-		return login;
-	}
-	public void setLogin(Login login) {
-		this.login = login;
 	}
 	
 }

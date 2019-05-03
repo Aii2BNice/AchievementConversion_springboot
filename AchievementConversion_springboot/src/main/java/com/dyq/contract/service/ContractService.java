@@ -9,5 +9,6 @@ public interface ContractService {
 	List<Contract> queryAllContract(Contract contract);
 	Contract queryContractById(Integer contractId);
 	int insContract(Contract contract);
+	int deleteContract(Integer contractId);
 	
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dyq.user.domain.Login;
+import com.dyq.user.domain.LoginGroupByTime;
 import com.dyq.user.domain.User;
 import com.dyq.user.domain.UserMapper;
 
@@ -68,6 +69,16 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public List<Login> queryAllLogin(Login login) {
 		return dao.queryAllLogin(login);
+	}
+
+	@Override
+	public int loginCount(Login login) {
+		return dao.loginCount(login);
+	}
+
+	@Override
+	public List<LoginGroupByTime> queryUserGroupByTime() {
+		return dao.queryUserGroupByTime();
 	}
 
 

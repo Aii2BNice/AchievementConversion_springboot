@@ -28,4 +28,9 @@ public class ContractServiceImpl implements ContractService {
 		return dao.insContract(contract);
 	}
 
+	@Override
+	public int deleteContract(Integer contractId) {
+		return dao.deleteContract(contractId);
+	}
+
 }

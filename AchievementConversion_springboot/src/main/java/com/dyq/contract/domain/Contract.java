@@ -14,6 +14,7 @@ public class Contract {
 	private Integer userId;
 	private Integer customerId;
 	private Integer fileId;
+	private Integer contractPrice;
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date contractTime;
 	private String contractUrl;
@@ -97,7 +98,12 @@ public class Contract {
 	public void setFile(FileInfo file) {
 		this.file = file;
 	}
-	
+	public Integer getContractPrice() {
+		return contractPrice;
+	}
+	public void setContractPrice(Integer contractPrice) {
+		this.contractPrice = contractPrice;
+	}
 	@Override
 	public String toString() {
 		return "Contract [contractId=" + contractId + ", contractName=" + contractName + ", userId=" + userId

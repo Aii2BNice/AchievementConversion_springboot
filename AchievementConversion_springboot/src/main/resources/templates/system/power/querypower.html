@@ -21,7 +21,7 @@
 	$(function(){
 		$("#select").append("<option value=''>--请选择--</option>");
 		$("#select").css("width","145px");
-		$("#h2").css({"color":"white","position":"relative","left":"270px","top":"-10px"});
+		$("#h2").css({"color":"black","position":"relative","left":"270px","top":"-10px"});
 		if($("#msg").text()!=""){
 			alert($("#msg").text());
 		}
@@ -80,7 +80,7 @@
 			<ul>
 				<li><a href="toadminmessage">消息通知</a></li>
 				<li><a th:href="@{toselfupdate(loginName=${session.user.loginName})}">个人管理</a></li>
-				<li><a href="toqueryuser">用户管理</a></li>
+				<li><a href="queryAllLogin">用户管理</a></li>
 				<li><a href="toquerypower" style="color: #13E8E9">权限管理</a></li>
 				<li><a href="queryAllFinance">收费查询</a></li>
 				<li><a th:href="@{toexamfile(loginName=${session.user.loginName})}">专利审核</a></li>

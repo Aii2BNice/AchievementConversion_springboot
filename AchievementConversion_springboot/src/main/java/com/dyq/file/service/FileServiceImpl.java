@@ -62,5 +62,20 @@ public class FileServiceImpl implements FileService {
 		return dao.getSuccessGroupByFileYear();
 	}
 
+	@Override
+	public int queryFileCount(FileInfo file) {
+		return dao.fileCount(file);
+	}
+
+	@Override
+	public int updateFileInfo(FileInfo file) {
+		return dao.updateFileInfo(file);
+	}
+
+	@Override
+	public int deleteFile(Integer fileId) {
+		return dao.deleteFile(fileId);
+	}
+
 
 }

@@ -9,17 +9,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<id property="powerId" column="power_id"/>
 		<id property="powerName" column="power_name"/>
 	</resultMap>
-	
+	<resultMap type="loginGroupByTime" id="loginGroupMap">
+		<id property="loginTime" column="login_time"/>
+		<result property="amount" column="amount"/>
+	</resultMap>
 	<resultMap type="login" id="loginMap">
 		<id property="loginId" column="login_id"/>
 		<id property="loginName" column="login_name"/>
 		<id property="powerId" column="power_id"/>
 		<association property="power" column="power_id" select="selectPower"/>
 	</resultMap>
+	<resultMap type="user" id="userMap">
+		<id property="UserId" column="user_id"/>
+		<result property="LoginName" column="login_name"/>
+		<result property="realName" column="realname"/>
+		<result property="Sex" column="sex"/>
+		<result property="postCode" column="post_code"/>
+		<result property="Email" column="email"/>
+		<result property="Tel" column="tel"/>
+	</resultMap>
 	<select id="selectPower" resultMap="powerMap">
 		select * from power
 		where power_id = #{powerId}
 	</select>
+	<sql id="queryLoginWhere">
+		<where>
+			<if test="loginName!=null and loginName!=''">
+				and login_name like "%"#{loginName}"%"
+			</if>
+			<if test="powerId!=null and powerId!=''">
+				and power_id = #{powerId}
+			</if>
+		</where>
+	</sql>
 	
 	<!-- 登录 -->
 	<select id="login" parameterType="login" resultMap="loginMap">
@@ -36,15 +58,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 查询全部 -->
 	<select id="queryAllLogin" resultMap="loginMap">
 		select * from login
-		<where>
-			<if test="loginName!=null and loginName!=''">
-				and login_name like "%"#{loginName}"%"
-			</if>
-			<if test="powerId!=null and powerId!=''">
-				and power_id = #{powerId}
-			</if>
-		</where>
+		<include refid="queryLoginWhere" />
 		order by login_id
+		<!-- limit #{pageNum},5 -->
+	</select>
+	
+	<select id="loginCount" resultType="java.lang.Integer">
+		select count(1) 
+		from login
+		<include refid="queryLoginWhere" />
 	</select>
 	
 	<!-- 注册 -->
@@ -66,20 +88,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where login_id = #{loginId}
 	</delete>
 	
-	<select id="queryAdminById"></select>
+	<select id="queryUserGroupByTime" resultMap="loginMap">
+		select login_time,count(login_id) as amount
+		from login
+		group by login_time
+	</select>
 	
-	<select id="queryCustomerById"></select>
-	
-	<insert id="insertAdmin"></insert>
-	
-	<insert id="insCustomer"></insert>
-	
-	<update id="updatAdmin"></update>
-	
-	<update id="updateCustomer"></update>
-	
-	<delete id="deleteAdmin"></delete>
-	
-	<delete id="deleteCustomrt"></delete>
+	<select id="queryUserById" resultMap="userMap">
+		select u.*
+		from userinfo u,login l
+		where u.login_name = l.login_name
+		and l.login_id = #{loginId};
+	</select>
 	
 </mapper>

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dyq.JumpController;
 import com.dyq.file.domain.FileGroupByType;
 import com.dyq.file.domain.FileGroupByYear;
 import com.dyq.file.domain.FileInfo;
@@ -50,7 +51,7 @@ public class FileRestController {
 		}else {
 			msg = "文件已存在";
 		}
-		return msg + "<a href='toInsFinance?fileId="+ fileinfo.getFileId() +"'>缴费</a>";
+		return JumpController.getFileUploadUrl(msg, fileinfo.getFileId());
 	}
 	
 	// 下载成果文件
@@ -63,9 +64,8 @@ public class FileRestController {
 		if(dest.exists()) {
 			resp.setContentType("application/x-msdownload");
 			resp.setHeader("Content-Disposition", "attachment;filename="+new String(dest.getName().getBytes("utf-8"),"ISO-8859-1"));
-			//缓冲
 			byte [] buffer = new byte[1024];
-			//文件输入输出流
+			//文件输出流
 			FileInputStream fis = new FileInputStream(dest);
 			OutputStream os = resp.getOutputStream();
 			BufferedInputStream bis = new BufferedInputStream(fis);
