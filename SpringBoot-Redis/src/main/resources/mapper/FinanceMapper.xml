@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dyq.mapper.FinanceMapper">
+	
+	<resultMap type="finance" id="FinanceMap">
+		<id property="financeId" column="finance_id"/>
+		<result property="price" column="price"/>
+		<result property="userId" column="login_id"/>
+		<result property="fileId" column="file_id"/>
+		<result property="registerTime" column="register_time"/>
+		<association property="login" select="queryLogin" column="login_id" />
+		<association property="file" select="queryFile" column="file_id"/>
+	</resultMap>
+	<resultMap type="login" id="loginMap">
+		<id property="loginId" column="login_id"/>
+		<id property="loginName" column="login_name"/>
+		<id property="powerId" column="power_id"/>
+	</resultMap>
+	<resultMap type="fileinfo" id="fileMap">
+		<id property="fileId" column="file_id"/>
+		<id property="fileName" column="file_name"/>
+		<id property="loginId" column="login_id"/>
+		<id property="applyTime" column="apply_time"/>
+		<id property="fileStateId" column="file_state_id"/>
+		<id property="fileTypeId" column="file_type_id"/>
+		<id property="filePrice" column="file_price"/>
+		<id property="fileIntroduce" column="file_introduce"/>
+		<id property="fileUploadTime" column="file_upload_time"/>
+		<id property="fileRealName" column="file_realname"/>
+	</resultMap>
+	<select id="queryLogin" resultMap="loginMap">
+		select * from login where login_id = #{loginId}
+	</select>
+	<select id="queryFile" resultMap="fileMap">
+		select * from fileinfo where file_id = #{fileId}
+	</select>
+	
+	<resultMap type="financeGroupByYear" id="financeGroupByYearMap">
+		<id property="registerTime" column="register_time"/>
+		<result property="amount" column="amount"/>
+	</resultMap>
+	
+	<!-- 查询所有 -->
+	<select id="queryAllFince" resultMap="FinanceMap">
+		select * from finance
+	</select>
+	
+	<select id="queryFinanceById" resultMap="FinanceMap">
+		select * from finance where finance_id = #{financeId}
+	</select>
+	
+	<!-- 插入数据 -->
+	<insert id="insFinance">
+		insert into finance(price,login_id,file_id,register_time)
+		values(#{price},#{userId},#{fileId},now())
+	</insert>
+	
+	<select id="queryFinanceByYear" resultMap="financeGroupByYearMap">
+		select register_time,count(finance_id) as amount
+		from springdatabase.finance
+		group by register_time
+	</select>
+	
+</mapper>

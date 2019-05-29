@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+<title>科研成果转化平台</title>
+<link rel="stylesheet" href="res/layui/css/layui.css">
+<link rel="stylesheet" href="res/static/css/index.css">
+<link rel="stylesheet" href="res/static/css/userinfo.css" />
+<link rel="stylesheet" href="css/buttons.css"/>
+<style type="text/css">
+	ul li{font-size: 16px;line-height: 40px;}
+	ul li a:hover{color: #13E8E9;}
+	#upload-right{width: 650px;height: 300px;position: fixed;top: 100px;left:40%;padding-top: 15px;}
+	#upload-left ul{font-size: 20px;color: 	#63B8FF;}
+	.exam{color: red;}	
+	#h2{position:relative;left:270px;color:black;}
+</style>
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("[href='toexit']").click(function(){
+			if(!confirm("确定要退出系统吗?")){
+				return false;
+			}
+		})
+		$("#delete").click(function(){
+			if(!confirm("确定要删除当前合同吗?")){
+				return false;
+			}
+		})
+	})
+</script>
+</head>
+<body>
+  <!-- nav部分 -->
+  <div class="nav index">
+    <div class="layui-container">
+      <!-- logo -->
+      <div class="nav-logo">
+        <a href="toindex">
+          <img src="res/static/img/logo.png" alt="科研转化" height="55px">
+        </a>
+      </div>
+      <div class="nav-list">
+        <button>
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="layui-nav">
+          <li class="layui-nav-item"><a href="toindex">首页</a></li>
+          <li class="layui-nav-item"><a href="tonews">动态</a></li>
+          <li class="layui-nav-item"><a href="tocase">案例</a></li>
+          <li class="layui-nav-item"><a href="tostatistics">统计</a></li>
+          <li class="layui-nav-item layui-this">
+          	<a th:if="${session.user==null}" href="tologin" id="login">登录</a>
+          	<a th:if="${session.user!=null}" th:href="@{toselfpage(powerId=${session.user.powerId})}"
+			   th:text="${session.user.loginName}"></a>
+          </li>
+          <li class="layui-nav-item"><a href="toabout">关于</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- main部分   -->
+  
+  <div id="particles-js">
+		<div id="upload-left">
+			<h3 th:text="'欢迎   '+${session.user.loginName} + ' 登录  '"></h3>
+			<hr>
+			<ul>
+				<li><a href="toadminmessage">消息通知</a></li>
+				<li><a th:href="@{toselfupdate(loginName=${session.user.loginName})}">个人管理</a></li>
+				<li><a href="queryAllLogin">用户管理</a></li>
+				<li><a href="toquerypower">权限管理</a></li>
+				<li><a href="queryAllFinance">收费查询</a></li>
+				<li><a th:href="@{toexamfile(loginName=${session.user.loginName})}">专利审核</a></li>
+				<li><a th:href="@{queryAllContract(loginName=${session.user.loginName})}" style="color: #13E8E9">合同管理</a></li>
+				<li><a href="toexit">退出系统</a></li>
+			</ul>
+		</div>
+		<div id="upload-right">
+			<br><h2 id="h2">转化合同查询</h2><br>
+			<table id="tab">
+				<tr>
+					<td>合同编号</td>
+					<td>合同名称</td>
+					<td>科研人员</td>
+					<td>企业客户</td>
+					<td>成果名称</td>
+					<td>交易价格</td>
+					<td>签订日期</td>
+					<td>操作</td>
+				</tr>
+				<tr th:each="contract : ${contracts}">
+					<td th:text="${contract.contractId}"></td>
+					<td th:text="${contract.contractName}"></td>
+					<td th:text="${contract.user.loginName}"></td>
+					<td th:text="${contract.customer.loginName}"></td>
+					<td th:text="${contract.file.fileName}"></td>
+					<td th:text="${contract.contractPrice} + '(万元)'"></td>
+					<td th:text="${#dates.format(contract.contractTime,'yyyy-MM-dd')}"></td>
+					<td>
+						<a id="delete" th:href="@{deleteContract(contractId=${contract.contractId})}">删除</a>
+					</td>
+				</tr>
+				<tr><td colspan="8" style="text-align: center;font-size: 15px;color: #4FC3F7;" th:if="${contracts == null or contracts.size() == 0 }">暂无数据</td></tr>
+			</table>
+			<span id="msg" style="display: none;" th:text="${msg}"></span>
+		</div>
+	</div>
+	<div class="footer">
+    <div class="layui-container">
+      <p class="footer-web">
+        <a href="#">合作伙伴</a>
+        <a href="#">清华大学</a>
+        <a href="#">北京大学</a>
+        <a href="#">复旦大学</a>
+        <a href="#">大连科研成果转化技术有限公司</a>
+        <a href="#">沈阳成果转化技术有限公司</a>
+        <a href="#">北京科研转化有限公司</a>
+      </p>
+      <div class="layui-row footer-contact">
+        <div class="layui-col-sm2 layui-col-lg1"><img src="res/static/img/erweima.jpg"></div>
+        <div class="layui-col-sm10 layui-col-lg11">
+          <div class="layui-row">
+            <div class="layui-col-sm6 layui-col-md8 layui-col-lg9">
+              <p class="contact-top"><i class="layui-icon layui-icon-cellphone"></i>&nbsp;400-1234567&nbsp;&nbsp;&nbsp;(9:00-18:00)</p>
+              <p class="contact-bottom"><i class="layui-icon layui-icon-home"></i>&nbsp;1234567@163.com</p>
+            </div>
+            <div class="layui-col-sm6 layui-col-md4 layui-col-lg3">
+              <p class="contact-top"><span class="right">大连高新园区</span></p>
+              <p class="contact-bottom"><span class="right">Copyright&nbsp;©&nbsp;2018-2020 More Templates </span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<script src="res/layui/layui.js"></script>
+<script>
+  layui.config({
+    base: 'res/static/js/' 
+  }).use('firm'); 
+</script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+<title>动态</title>
+<link rel="icon" href="res/static/ico/pagelogo.ico" type="image/x-icon"/>
+<link rel="stylesheet" href="res/layui/css/layui.css">
+<link rel="stylesheet" href="res/static/css/index.css">
+</head>
+<body>
+<!-- nav部分 -->
+  <div class="nav">
+    <div class="layui-container">
+      <!-- 公司logo -->
+      <div class="nav-logo">
+        <a href="toindex">
+          <img src="res/static/img/logo.png" alt="成果转化" height="55px">
+        </a>
+      </div>
+      <div class="nav-list">
+        <button>
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="layui-nav">
+          <li class="layui-nav-item"><a href="toindex">首页</a></li>
+          <li class="layui-nav-item layui-this"><a href="tonews">动态</a></li>
+          <li class="layui-nav-item"><a href="tocase">案例</a></li>
+          <li class="layui-nav-item"><a href="tostatistics">统计</a></li>
+          <li class="layui-nav-item">
+          	<a th:if="${session.user==null}" href="tologin" id="login">登录</a>
+          	<a th:if="${session.user!=null}" th:href="@{toselfpage(powerId=${session.user.powerId})}"
+			   th:text="${session.user.loginName}"></a>
+          </li>
+          <li class="layui-nav-item"><a href="toabout">关于</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- banner部分 -->
+  <div class="banner news">
+    <div class="title">
+      <p>实时新闻</p>
+      <p class="en">Real-time News</p>
+    </div>
+  </div>
+  <!-- main -->
+  <div class="main-news">
+    <div class="layui-container">
+      <div class="layui-row layui-col-space20">
+        <div class="layui-col-lg6 content">
+          <div>
+            <div class="news-img"><a href="newsDetail.html"><img src="res/static/img/news1.jpg"></a></div><div class="news-panel">
+              <strong><a href="newsDetail.html">新一批改革措施再次明确"强化科技成果转化激励"</a></strong>
+              <p class="detail"><span>允许转制院所和事业单位管理人员、科研人员以“技术股+现金股”形式持有股权；引入技术经理人全程参与成果转化；鼓励高校、科研院所以订单等方式参与企业技术攻关……</span><a href="#">[详细]</a></p>
+              <p class="read-push">阅读 <span>120</span>&nbsp;&nbsp;&nbsp;&nbsp;发布时间：<span>2018-12-7</span></p>
+            </div>
+          </div>
+        </div>
+        <div class="layui-col-lg6 content">
+          <div>
+            <div class="news-img"><a href="newsDetail.html"><img src="res/static/img/news2.jpg"></a></div><div class="news-panel">
+              <strong><a href="newsDetail.html">加快高校和科研院所科技成果转化</a></strong>
+              <p class="detail"><span>南方网讯　近日，“高层次人才成果转化暨科技金融践行之道”论坛在广州举行，现场举行博士柳汇基金启航暨战略合作伙伴签约仪式。</span><a href="#">[详细]</a></p>
+              <p class="read-push">阅读 <span>835</span>&nbsp;&nbsp;&nbsp;&nbsp;发布时间：<span>2018-12-7</span></p>
+            </div>
+          </div>
+        </div>
+        <div class="layui-col-lg6 content">
+          <div>
+            <div class="news-img"><a href="newsDetail.html"><img src="res/static/img/news3.jpg"></a></div><div class="news-panel">
+              <strong><a href="newsDetail.html">[迎接科技创新的未来]加快科技成果转化，增强自主创新能力</a></strong>
+              <p class="detail"><span>央视网消息：近日，《论道》栏目邀请了中国科学院原副院长、北京大学原校长王恩哥先生，中国企业联合国常务副会长兼理事长、工信部原总工程师朱宏任先生，就科技创新等相关话题进行了讨论。</span><a href="#">[详细]</a></p>
+              <p class="read-push">阅读 <span>112</span>&nbsp;&nbsp;&nbsp;&nbsp;发布时间：<span>2018-07-20</span></p>
+            </div>
+          </div>
+        </div>
+        <div class="layui-col-lg6 content">
+          <div>
+            <div class="news-img"><a href="newsDetail.html"><img src="res/static/img/news4.jpg"></a></div><div class="news-panel">
+              <strong><a href="newsDetail.html">近三年科研成果转化收入1538亿元</a></strong>
+              <p class="detail"><span>连续9年，广东区域创新能力综合排名居全国第二；国家级高新技术企业19857家，居全国第一；全省专利授权量居全国首位；技术自给率达71%；2016年全省R&amp;D经费支出占GDP比重达2.52%……</span><a href="#">[详细]</a></p>
+              <p class="read-push">阅读 <span>3131</span>&nbsp;&nbsp;&nbsp;&nbsp;发布时间：<span>2018-08-13</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- footer部分 -->
+ <div class="footer">
+    <div class="layui-container">
+      <p class="footer-web">
+        <a href="#">合作伙伴</a>
+        <a href="#">清华大学</a>
+        <a href="#">北京大学</a>
+        <a href="#">复旦大学</a>
+        <a href="#">大连科研成果转化技术有限公司</a>
+        <a href="#">沈阳成果转化技术有限公司</a>
+        <a href="#">北京科研转化有限公司</a>
+      </p>
+      <div class="layui-row footer-contact">
+        <div class="layui-col-sm2 layui-col-lg1"><img src="res/static/img/erweima.jpg"></div>
+        <div class="layui-col-sm10 layui-col-lg11">
+          <div class="layui-row">
+            <div class="layui-col-sm6 layui-col-md8 layui-col-lg9">
+              <p class="contact-top"><i class="layui-icon layui-icon-cellphone"></i>&nbsp;400-1234567&nbsp;&nbsp;&nbsp;(9:00-18:00)</p>
+              <p class="contact-bottom"><i class="layui-icon layui-icon-home"></i>&nbsp;1234567@163.com</p>
+            </div>
+            <div class="layui-col-sm6 layui-col-md4 layui-col-lg3">
+              <p class="contact-top"><span class="right">大连高新园区</span></p>
+              <p class="contact-bottom"><span class="right">Copyright&nbsp;©&nbsp;2018-2020 More Templates </span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<script src="res/layui/layui.js"></script>
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script>
+  layui.config({
+    base: 'res/static/js/' 
+  }).use('firm'); 
+</script>
+</body>
+</html>
